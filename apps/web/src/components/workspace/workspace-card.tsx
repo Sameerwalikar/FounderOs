@@ -6,12 +6,14 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { STAGE_LABELS } from "@/lib/validators/workspace";
 
 interface WorkspaceCardProps {
   id: string;
   name: string;
   idea: string;
   industry?: string | null;
+  startupStage?: string | null;
   updatedAt: string;
   sectionsCompleted: number;
   totalSections: number;
@@ -22,6 +24,7 @@ export function WorkspaceCard({
   name,
   idea,
   industry,
+  startupStage,
   updatedAt,
   sectionsCompleted,
   totalSections,
@@ -31,6 +34,9 @@ export function WorkspaceCard({
   const [loading, setLoading] = useState(false);
 
   const relativeTime = getRelativeTime(new Date(updatedAt));
+  const stageLabel = startupStage
+    ? STAGE_LABELS[startupStage as keyof typeof STAGE_LABELS]
+    : null;
 
   async function handleArchive() {
     setLoading(true);
@@ -61,23 +67,30 @@ export function WorkspaceCard({
 
   return (
     <Card
-      className="group relative cursor-pointer transition-all hover:border-border/80 hover:shadow-sm"
+      className="group relative cursor-pointer transition-all duration-200 hover:border-primary/30 hover:shadow-md hover:shadow-primary/5"
       onClick={() => router.push(`/dashboard/workspace/${id}`)}
     >
-      <CardHeader className="flex-row items-start justify-between space-y-0 pb-2">
-        <div className="min-w-0 flex-1">
-          <h3 className="line-clamp-1 text-sm font-semibold">{name}</h3>
-          {industry && (
-            <Badge variant="secondary" className="mt-1 text-[10px]">
-              {industry}
-            </Badge>
-          )}
+      <CardHeader className="flex-row items-start justify-between space-y-0 pb-3">
+        <div className="min-w-0 flex-1 space-y-1">
+          <h3 className="line-clamp-1 font-semibold">{name}</h3>
+          <div className="flex flex-wrap items-center gap-1.5">
+            {industry && (
+              <Badge variant="secondary" className="text-[10px]">
+                {industry}
+              </Badge>
+            )}
+            {stageLabel && (
+              <Badge variant="outline" className="text-[10px]">
+                {stageLabel}
+              </Badge>
+            )}
+          </div>
         </div>
         <div className="relative">
           <Button
             variant="ghost"
             size="icon"
-            className="h-8 w-8 opacity-0 group-hover:opacity-100"
+            className="h-8 w-8 opacity-0 transition-opacity group-hover:opacity-100"
             onClick={(e) => {
               e.stopPropagation();
               setMenuOpen(!menuOpen);
@@ -89,19 +102,15 @@ export function WorkspaceCard({
 
           {menuOpen && (
             <div
-              className="absolute right-0 top-full z-10 mt-1 w-40 rounded-md border border-border bg-popover py-1 shadow-md"
+              className="absolute right-0 top-full z-10 mt-1 w-40 rounded-lg border border-border bg-popover py-1 shadow-lg"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 type="button"
-                className="flex w-full items-center gap-2 px-3 py-2 text-sm hover:bg-accent"
+                className="flex w-full items-center gap-2 px-3 py-2 text-sm transition-colors hover:bg-accent"
                 onClick={() => {
                   const newName = prompt("Enter new name:", name);
-                  if (
-                    newName &&
-                    newName.length >= 1 &&
-                    newName.length <= 100
-                  ) {
+                  if (newName && newName.length >= 1 && newName.length <= 100) {
                     fetch(`/api/workspaces/${id}`, {
                       method: "PATCH",
                       headers: { "Content-Type": "application/json" },
@@ -111,35 +120,46 @@ export function WorkspaceCard({
                   setMenuOpen(false);
                 }}
               >
-                <Pencil className="h-3 w-3" /> Rename
+                <Pencil className="h-3.5 w-3.5" /> Rename
               </button>
               <button
                 type="button"
-                className="flex w-full items-center gap-2 px-3 py-2 text-sm hover:bg-accent"
+                className="flex w-full items-center gap-2 px-3 py-2 text-sm transition-colors hover:bg-accent"
                 onClick={handleArchive}
                 disabled={loading}
               >
-                <Archive className="h-3 w-3" /> Archive
+                <Archive className="h-3.5 w-3.5" /> Archive
               </button>
+              <div className="my-1 border-t border-border" />
               <button
                 type="button"
-                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-destructive hover:bg-accent"
+                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-destructive transition-colors hover:bg-destructive/10"
                 onClick={handleDelete}
                 disabled={loading}
               >
-                <Trash2 className="h-3 w-3" /> Delete
+                <Trash2 className="h-3.5 w-3.5" /> Delete
               </button>
             </div>
           )}
         </div>
       </CardHeader>
       <CardContent>
-        <p className="line-clamp-2 text-xs text-muted-foreground">{idea}</p>
-        <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
-          <span>
-            {sectionsCompleted}/{totalSections} sections
-          </span>
-          <span>{relativeTime}</span>
+        <p className="line-clamp-2 text-sm text-muted-foreground">{idea}</p>
+        <div className="mt-4 flex items-center justify-between">
+          <div className="flex items-center gap-1.5">
+            <div className="h-1.5 w-16 overflow-hidden rounded-full bg-muted">
+              <div
+                className="h-full rounded-full bg-primary transition-all"
+                style={{
+                  width: `${totalSections > 0 ? (sectionsCompleted / totalSections) * 100 : 0}%`,
+                }}
+              />
+            </div>
+            <span className="text-xs text-muted-foreground">
+              {sectionsCompleted}/{totalSections}
+            </span>
+          </div>
+          <span className="text-xs text-muted-foreground">{relativeTime}</span>
         </div>
       </CardContent>
     </Card>

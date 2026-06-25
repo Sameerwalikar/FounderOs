@@ -33,11 +33,13 @@ export default async function WorkspaceLayout({
       <div className="flex flex-1 flex-col overflow-hidden">
         <WorkspaceHeader
           name={workspace.name}
+          industry={workspace.industry}
+          startupStage={workspace.startupStage}
           status={workspace.status}
           createdAt={workspace.createdAt.toISOString()}
           updatedAt={workspace.updatedAt.toISOString()}
         />
-        <main className="flex-1 overflow-y-auto p-6">{children}</main>
+        <main className="flex-1 overflow-y-auto p-6 lg:p-8">{children}</main>
       </div>
     </div>
   );

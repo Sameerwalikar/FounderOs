@@ -28,7 +28,8 @@ export default async function DashboardPage() {
             Welcome back, {firstName}
           </h1>
           <p className="text-sm text-muted-foreground">
-            {workspaces.length} workspace{workspaces.length !== 1 ? "s" : ""}
+            {workspaces.length} workspace{workspaces.length !== 1 ? "s" : ""} ·
+            Manage your startup blueprints
           </p>
         </div>
         <CreateWorkspaceDialog />
@@ -39,14 +40,16 @@ export default async function DashboardPage() {
 
       {/* Workspace Grid or Empty State */}
       {workspaces.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-20">
-          <Rocket className="h-12 w-12 text-muted-foreground" />
-          <h2 className="mt-4 text-lg font-semibold">
+        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card/30 py-20">
+          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">
+            <Rocket className="h-8 w-8 text-primary" />
+          </div>
+          <h2 className="mt-5 text-lg font-semibold">
             Create your first startup blueprint
           </h2>
-          <p className="mt-2 max-w-sm text-center text-sm text-muted-foreground">
-            Enter your startup idea and let AI generate a complete business
-            plan, market research, architecture, and more.
+          <p className="mt-2 max-w-md text-center text-sm text-muted-foreground">
+            Enter your startup idea and let our AI co-founder generate a
+            complete business plan, market research, architecture, and more.
           </p>
           <div className="mt-6">
             <CreateWorkspaceDialog />
@@ -61,6 +64,7 @@ export default async function DashboardPage() {
               name={w.name}
               idea={w.idea}
               industry={w.industry}
+              startupStage={w.startupStage}
               updatedAt={w.updatedAt.toISOString()}
               sectionsCompleted={
                 w.sections.filter((s) => s.generationStatus === "completed")

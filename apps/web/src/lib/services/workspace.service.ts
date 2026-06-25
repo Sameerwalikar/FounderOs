@@ -114,7 +114,6 @@ export async function unarchiveWorkspace(userId: string, workspaceId: string) {
 }
 
 export async function deleteWorkspace(userId: string, workspaceId: string) {
-  // Soft delete
   return prisma.workspace.updateMany({
     where: { id: workspaceId, userId },
     data: { deletedAt: new Date(), status: "deleted" },
