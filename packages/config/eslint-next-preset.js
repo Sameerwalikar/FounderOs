@@ -1,0 +1,9 @@
+/** @type {import("eslint").Linter.Config} */
+module.exports = {
+  extends: ["./eslint-preset.js", "next/core-web-vitals"],
+  rules: {
+    // Next.js specific overrides
+    "@next/next/no-html-link-for-pages": "error",
+    "react/react-in-jsx-scope": "off",
+  },
+};

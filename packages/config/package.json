@@ -1,0 +1,16 @@
+{
+  "name": "@founder-os/config",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "exports": {
+    "./eslint-preset": "./eslint-preset.js",
+    "./eslint-next-preset": "./eslint-next-preset.js",
+    "./prettier-preset": "./prettier-preset.js",
+    "./tsconfig.base.json": "./tsconfig.base.json"
+  },
+  "files": [
+    "*.js",
+    "tsconfig.base.json"
+  ]
+}
