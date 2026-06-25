@@ -18,21 +18,21 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 1: Project Setup
 
 - [ ] 1. Initialize monorepo and core configuration
-  - [-] 1.1 Initialize Turborepo monorepo with pnpm workspaces
+  - [ ] 1.1 Initialize Turborepo monorepo with pnpm workspaces
     - Create root `package.json`, `turbo.json`, `pnpm-workspace.yaml`
     - Create `apps/web/` Next.js 14 app with App Router (`npx create-next-app`)
     - Create `packages/config/` for shared ESLint, TypeScript, Tailwind configs
     - Configure path aliases (`@/` for `apps/web/src`)
     - _Requirements: N/A (infrastructure)_
 
-  - [-] 1.2 Configure TypeScript, ESLint, and Prettier
+  - [ ] 1.2 Configure TypeScript, ESLint, and Prettier
     - Create shared `tsconfig.base.json` in `packages/config/`
     - Configure ESLint with `@typescript-eslint`, `eslint-plugin-react`, `eslint-plugin-next`
     - Set up Prettier with Tailwind plugin for consistent class ordering
     - Add `lint` and `format` scripts to root `package.json`
     - _Requirements: N/A (infrastructure)_
 
-  - [~] 1.3 Configure Tailwind CSS and design tokens
+  - [ ] 1.3 Configure Tailwind CSS and design tokens
     - Install Tailwind CSS 3.4 with PostCSS and Autoprefixer
     - Create `tailwind.config.ts` with custom colors, spacing, radius from design tokens
     - Set up dark theme as default with CSS variables
@@ -40,14 +40,14 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/tailwind.config.ts`, `apps/web/styles/globals.css`
     - _Requirements: 15.1_
 
-  - [~] 1.4 Set up shadcn/ui component library
+  - [ ] 1.4 Set up shadcn/ui component library
     - Initialize shadcn/ui with `npx shadcn-ui@latest init`
     - Configure component output to `apps/web/components/ui/`
     - Install base components: Button, Card, Input, Dialog, Dropdown, Toast, Skeleton
     - Create `components/ui/index.ts` barrel export
     - _Requirements: 15.2_
 
-  - [~] 1.5 Configure environment variables and Docker Compose for local dev
+  - [ ] 1.5 Configure environment variables and Docker Compose for local dev
     - Create `.env.example` with all required environment variables
     - Create `docker-compose.yml` with PostgreSQL 16 and Redis services
     - Create `.env.local` template for Clerk, Stripe, Gemini, Supabase keys
@@ -55,14 +55,14 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `docker-compose.yml`, `.env.example`, `apps/web/lib/env.ts`
     - _Requirements: N/A (infrastructure)_
 
-  - [~] 1.6 Set up CI/CD pipeline with GitHub Actions
+  - [ ] 1.6 Set up CI/CD pipeline with GitHub Actions
     - Create `.github/workflows/ci.yml` for lint, type-check, test on PR
     - Create `.github/workflows/deploy-preview.yml` for Vercel preview deploys
     - Create `.github/workflows/deploy-production.yml` for main branch deploys
     - Configure caching for pnpm and Next.js build
     - _Requirements: N/A (infrastructure)_
 
-- [~] 2. Checkpoint - Verify project setup
+- [ ] 2. Checkpoint - Verify project setup
   - Ensure `pnpm dev` starts the Next.js app successfully
   - Ensure `pnpm lint` and `pnpm type-check` pass
   - Ensure Docker Compose starts PostgreSQL and Redis
@@ -71,7 +71,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 2: Database & ORM
 
 - [ ] 3. Set up Prisma and database schema
-  - [~] 3.1 Initialize Prisma with PostgreSQL and create base schema
+  - [ ] 3.1 Initialize Prisma with PostgreSQL and create base schema
     - Install Prisma and `@prisma/client`
     - Create `prisma/schema.prisma` with User, Workspace, Section models
     - Configure Prisma to use Supabase connection string from env
@@ -79,14 +79,14 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/prisma/schema.prisma`, `apps/web/lib/db/client.ts`
     - _Requirements: 2.1, 13.1_
 
-  - [~] 3.2 Complete Prisma schema with all models
+  - [ ] 3.2 Complete Prisma schema with all models
     - Add SectionVersion, GenerationLog, ChatMessage, File, Subscription, CreditTransaction, Plan models
     - Define all relations, indexes, enums, and constraints
     - Add CHECK constraints via `@@map` and raw SQL migrations
     - Files: `apps/web/prisma/schema.prisma`
     - _Requirements: 2.1, 11.5, 14.1, 16.2_
 
-  - [~] 3.3 Create initial migration and seed data
+  - [ ] 3.3 Create initial migration and seed data
     - Run `prisma migrate dev --name init` to generate migration
     - Create `prisma/seed.ts` with plan data (Free, Pro, Team, Enterprise)
     - Add section type enum values and default workspace settings
@@ -94,7 +94,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/prisma/migrations/`, `apps/web/prisma/seed.ts`
     - _Requirements: 14.1_
 
-  - [~] 3.4 Create database service layer and query helpers
+  - [ ] 3.4 Create database service layer and query helpers
     - Create `lib/db/queries/workspace.queries.ts` (CRUD operations)
     - Create `lib/db/queries/section.queries.ts` (section CRUD, version management)
     - Create `lib/db/queries/user.queries.ts` (user sync, credit operations)
@@ -108,7 +108,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - **Property 5: Workspace Deletion Cascade** — verify no orphaned records
     - **Validates: Requirements 2.1, 2.4, 2.5, 2.7**
 
-- [~] 4. Checkpoint - Verify database layer
+- [ ] 4. Checkpoint - Verify database layer
   - Ensure migrations apply cleanly to Docker PostgreSQL
   - Ensure seed data populates plans table correctly
   - Ensure all tests pass, ask the user if questions arise.
@@ -116,7 +116,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 3: Authentication
 
 - [ ] 5. Integrate Clerk authentication
-  - [~] 5.1 Install and configure Clerk with Next.js
+  - [ ] 5.1 Install and configure Clerk with Next.js
     - Install `@clerk/nextjs`
     - Configure `ClerkProvider` in root layout
     - Create middleware.ts with `authMiddleware` protecting `/(dashboard)` routes
@@ -124,7 +124,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/middleware.ts`, `apps/web/app/(auth)/`, `apps/web/app/layout.tsx`
     - _Requirements: 13.1, 13.5_
 
-  - [~] 5.2 Create Clerk webhook for user sync
+  - [ ] 5.2 Create Clerk webhook for user sync
     - Create `app/api/webhooks/clerk/route.ts` to handle `user.created` and `user.updated`
     - Sync Clerk user data to local `users` table (clerkId, email, name, avatar)
     - Initialize new users with Free plan and 10 credits
@@ -132,7 +132,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/app/api/webhooks/clerk/route.ts`
     - _Requirements: 13.1, 13.2, 14.1_
 
-  - [~] 5.3 Create auth helpers and workspace authorization
+  - [ ] 5.3 Create auth helpers and workspace authorization
     - Create `lib/auth/helpers.ts` with `getCurrentUser()`, `requireAuth()`, `authorizeWorkspace()`
     - Implement workspace ownership check middleware
     - Create session timeout configuration (30-minute inactivity)
@@ -147,7 +147,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 4: Landing Page
 
 - [ ] 6. Build landing page
-  - [~] 6.1 Create hero section with idea input CTA
+  - [ ] 6.1 Create hero section with idea input CTA
     - Create `app/page.tsx` as the landing page with RSC
     - Build hero section with headline, subheadline, animated gradient background
     - Add startup idea input with character counter and submit button
@@ -155,7 +155,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/app/page.tsx`, `apps/web/components/landing/hero.tsx`
     - _Requirements: 1.1, 15.1_
 
-  - [~] 6.2 Create features section and social proof
+  - [ ] 6.2 Create features section and social proof
     - Build feature cards grid showcasing AI modules (Product Analyst, Market Research, etc.)
     - Add animated icons with Lucide React
     - Create testimonials/social proof section (placeholder content)
@@ -163,14 +163,14 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/components/landing/features.tsx`, `apps/web/components/landing/social-proof.tsx`
     - _Requirements: 15.1_
 
-  - [~] 6.3 Create pricing preview and footer
+  - [ ] 6.3 Create pricing preview and footer
     - Build pricing cards showing Free, Pro, Team plans with feature comparison
     - Create footer with navigation links, legal links, social media
     - Add FAQ accordion section using shadcn Accordion
     - Files: `apps/web/components/landing/pricing.tsx`, `apps/web/components/landing/footer.tsx`
     - _Requirements: 14.1, 15.1_
 
-  - [~] 6.4 Create shared navigation header
+  - [ ] 6.4 Create shared navigation header
     - Build responsive navigation with logo, nav links, sign-in/sign-up buttons
     - Implement mobile hamburger menu with slide-out drawer
     - Add Clerk UserButton for authenticated users
@@ -180,7 +180,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 5: Dashboard
 
 - [ ] 7. Build workspace dashboard
-  - [~] 7.1 Create dashboard layout and workspace list page
+  - [ ] 7.1 Create dashboard layout and workspace list page
     - Create `app/(dashboard)/layout.tsx` with top navigation bar
     - Create `app/(dashboard)/dashboard/page.tsx` as server component
     - Fetch user workspaces sorted by `updatedAt` DESC
@@ -188,7 +188,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/app/(dashboard)/layout.tsx`, `apps/web/app/(dashboard)/dashboard/page.tsx`
     - _Requirements: 2.2, 13.3_
 
-  - [~] 7.2 Create workspace card and empty states
+  - [ ] 7.2 Create workspace card and empty states
     - Build `WorkspaceCard` component with hover effects and action menu
     - Create empty state illustration for new users (no workspaces)
     - Add "Create new workspace" CTA card with idea input dialog
@@ -196,7 +196,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/components/workspace/workspace-card.tsx`, `apps/web/components/workspace/empty-state.tsx`
     - _Requirements: 2.2, 2.4, 2.5, 2.6_
 
-  - [~] 7.3 Create workspace search, filter, and credits display
+  - [ ] 7.3 Create workspace search, filter, and credits display
     - Add search input with debounced filtering on workspace name/idea
     - Create filter tabs for Active/Archived workspaces
     - Display remaining credits badge in dashboard header
@@ -204,7 +204,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/components/workspace/workspace-filters.tsx`, `apps/web/components/workspace/credits-badge.tsx`
     - _Requirements: 2.2, 2.4, 2.6, 14.2_
 
-  - [~] 7.4 Create workspace creation flow (idea submission)
+  - [ ] 7.4 Create workspace creation flow (idea submission)
     - Create `CreateWorkspaceDialog` with idea text input (10-500 chars)
     - Implement Zod validation with error messages for too short/too long
     - Add server action to create workspace and initialize 15 sections
@@ -218,7 +218,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - **Property 6: Archive State Transition** — verify archive/unarchive visibility
     - **Validates: Requirements 1.1, 1.3, 1.4, 2.2, 2.6**
 
-- [~] 8. Checkpoint - Verify dashboard and workspace creation
+- [ ] 8. Checkpoint - Verify dashboard and workspace creation
   - Ensure workspace creation works end-to-end
   - Ensure workspace list displays correctly sorted
   - Ensure all tests pass, ask the user if questions arise.
@@ -226,7 +226,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 6: Workspace Shell
 
 - [ ] 9. Build workspace layout and navigation
-  - [~] 9.1 Create workspace layout with sidebar
+  - [ ] 9.1 Create workspace layout with sidebar
     - Create `app/(dashboard)/workspace/[id]/layout.tsx`
     - Build collapsible sidebar with section navigation links
     - Implement active section highlighting based on current route
@@ -234,7 +234,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/app/(dashboard)/workspace/[id]/layout.tsx`, `apps/web/components/workspace/sidebar.tsx`
     - _Requirements: 2.3, 15.3_
 
-  - [~] 9.2 Create section navigation and breadcrumbs
+  - [ ] 9.2 Create section navigation and breadcrumbs
     - Build breadcrumb component showing Dashboard > Workspace > Section
     - Create section route pages for all 15 sections as placeholder pages
     - Implement keyboard shortcut navigation (Cmd+K palette)
@@ -242,14 +242,14 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/components/shared/breadcrumbs.tsx`, `apps/web/app/(dashboard)/workspace/[id]/*/page.tsx`
     - _Requirements: 2.3, 15.1, 15.3_
 
-  - [~] 9.3 Create workspace settings page
+  - [ ] 9.3 Create workspace settings page
     - Build settings page with workspace rename form
     - Add danger zone with archive and delete workspace actions
     - Implement confirmation dialogs for destructive actions
     - Files: `apps/web/app/(dashboard)/workspace/[id]/settings/page.tsx`
     - _Requirements: 2.4, 2.5, 2.6, 2.7_
 
-  - [~] 9.4 Set up Zustand stores and React Query configuration
+  - [ ] 9.4 Set up Zustand stores and React Query configuration
     - Create workspace store (active section, sidebar state, generation status)
     - Configure React Query provider with default options
     - Create query keys factory for workspace, sections, chat
@@ -260,7 +260,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 7: AI Infrastructure
 
 - [ ] 10. Build AI provider abstraction layer
-  - [~] 10.1 Create AI provider interface and Gemini implementation
+  - [ ] 10.1 Create AI provider interface and Gemini implementation
     - Define `AIProvider` interface with `generateStream()` and `generateJSON()`
     - Implement `GeminiProvider` class using `@google/generative-ai` SDK
     - Add token estimation and model configuration
@@ -268,7 +268,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/lib/ai/providers/base.provider.ts`, `apps/web/lib/ai/providers/gemini.provider.ts`
     - _Requirements: 3.1, 3.3_
 
-  - [~] 10.2 Create AI Provider Registry and configuration
+  - [ ] 10.2 Create AI Provider Registry and configuration
     - Implement `AIProviderRegistry` class with register/getProvider/setDefault
     - Create provider initialization in `lib/ai/index.ts`
     - Add environment variable validation for API keys
@@ -276,7 +276,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/lib/ai/provider-registry.ts`, `apps/web/lib/ai/index.ts`, `apps/web/lib/ai/providers/mock.provider.ts`
     - _Requirements: 3.1_
 
-  - [~] 10.3 Create Context Builder service
+  - [ ] 10.3 Create Context Builder service
     - Implement `ContextBuilder` class that fetches workspace data
     - Build `AgentContext` interface with startup idea, existing sections, metadata
     - Add context dependency graph (which agents need which prior sections)
@@ -284,7 +284,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/lib/ai/context-builder.ts`
     - _Requirements: 3.1, 3.2, 12.1_
 
-  - [~] 10.4 Create Prompt Engine with template system
+  - [ ] 10.4 Create Prompt Engine with template system
     - Implement `PromptEngine` class with template registration
     - Create `PromptTemplate` interface (system prompt, user prompt builder, temperature, tokens)
     - Add model selection logic (pro vs flash based on agent complexity)
@@ -292,7 +292,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/lib/ai/prompt-engine.ts`, `apps/web/lib/ai/safety/input-sanitizer.ts`
     - _Requirements: 3.1, 3.2_
 
-  - [~] 10.5 Create Retry Manager with exponential backoff
+  - [ ] 10.5 Create Retry Manager with exponential backoff
     - Implement `RetryManager` with configurable retry count and backoff
     - Add retryable error classification (rate limit, timeout, server error)
     - Implement exponential backoff with jitter
@@ -300,7 +300,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/lib/ai/retry-manager.ts`
     - _Requirements: 3.4, 3.5_
 
-  - [~] 10.6 Create Stream Manager and SSE utilities
+  - [ ] 10.6 Create Stream Manager and SSE utilities
     - Implement `createSSEStream()` function producing ReadableStream
     - Define `StreamChunk` types (content, status, retry, metadata)
     - Create client-side SSE hook `useSSEGeneration()`
@@ -308,7 +308,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/lib/ai/stream-manager.ts`, `apps/web/hooks/use-sse-generation.ts`
     - _Requirements: 3.3, 15.5_
 
-  - [~] 10.7 Create Credit Gate service
+  - [ ] 10.7 Create Credit Gate service
     - Implement `CreditService` with check/deduct/refund/getBalance/resetMonthly
     - Add atomic credit deduction (check + deduct in transaction)
     - Implement credit refund on generation failure
@@ -316,7 +316,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/lib/billing/credit.service.ts`
     - _Requirements: 14.2, 14.3, 14.6, 14.8_
 
-  - [~] 10.8 Create AI Orchestrator (core coordinator)
+  - [ ] 10.8 Create AI Orchestrator (core coordinator)
     - Implement `AIOrchestrator` class composing all AI services
     - Add section-to-agent mapping logic
     - Create orchestration flow: credit gate → context → prompt → stream → save
@@ -330,7 +330,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - **Property 17: Credit Reset Idempotence** — verify reset sets exact plan credits
     - **Validates: Requirements 1.5, 3.4, 3.5, 14.3, 14.5, 14.6, 14.8**
 
-- [~] 11. Checkpoint - Verify AI infrastructure
+- [ ] 11. Checkpoint - Verify AI infrastructure
   - Ensure provider registry works with mock and real Gemini provider
   - Ensure credit deduction/refund logic is correct
   - Ensure retry manager respects max attempts
@@ -339,7 +339,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 8: Product Analyst Agent
 
 - [ ] 12. Implement Product Analyst AI agent
-  - [~] 12.1 Create Product Analyst prompt template and output schema
+  - [ ] 12.1 Create Product Analyst prompt template and output schema
     - Define Zod output schema for overview (description, problem, solution, targetAudience, valueProposition, assumptions[])
     - Create system prompt: "You are a product analyst at a top-tier VC firm"
     - Implement user prompt builder with startup idea context
@@ -347,7 +347,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/lib/ai/agents/product-analyst.ts`, `apps/web/lib/validators/overview.schema.ts`
     - _Requirements: 3.2_
 
-  - [~] 12.2 Create Overview section generation API route
+  - [ ] 12.2 Create Overview section generation API route
     - Create `app/api/generate/route.ts` POST handler
     - Implement auth → validate → authorize → credit check → generate → stream flow
     - Save generated content to sections table on stream completion
@@ -355,7 +355,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/app/api/generate/route.ts`
     - _Requirements: 3.1, 3.3, 14.6_
 
-  - [~] 12.3 Create Overview section UI with streaming display
+  - [ ] 12.3 Create Overview section UI with streaming display
     - Create `app/(dashboard)/workspace/[id]/overview/page.tsx`
     - Build `GenerationPanel` component with generate button and loading states
     - Implement streaming text display with typewriter effect
@@ -363,7 +363,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/app/(dashboard)/workspace/[id]/overview/page.tsx`, `apps/web/components/ai/generation-panel.tsx`
     - _Requirements: 3.3, 3.4, 15.5_
 
-  - [~] 12.4 Create generation error handling and retry UI
+  - [ ] 12.4 Create generation error handling and retry UI
     - Implement retry button with attempt counter (max 3 retries)
     - Show persistent error after exhausted retries with support link
     - Add skeleton loading state during generation
@@ -378,7 +378,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 9: Market Researcher Agent
 
 - [ ] 13. Implement Market Researcher AI agent
-  - [~] 13.1 Create Market Researcher prompt template and output schema
+  - [ ] 13.1 Create Market Researcher prompt template and output schema
     - Define Zod schema for market research (marketSize, demographics, trends, growth, competitors[], swot{})
     - Create system prompt: "You are a market research analyst"
     - Implement user prompt builder including overview context as dependency
@@ -386,7 +386,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/lib/ai/agents/market-researcher.ts`, `apps/web/lib/validators/market-research.schema.ts`
     - _Requirements: 4.1, 4.2, 4.3_
 
-  - [~] 13.2 Create Market Research section UI with collapsible sub-sections
+  - [ ] 13.2 Create Market Research section UI with collapsible sub-sections
     - Create `app/(dashboard)/workspace/[id]/market-research/page.tsx`
     - Build collapsible sections: Market Size, Competitors, SWOT, Growth Potential
     - Display competitor cards with strengths/weaknesses/positioning
@@ -394,7 +394,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/app/(dashboard)/workspace/[id]/market-research/page.tsx`, `apps/web/components/workspace/market-research/`
     - _Requirements: 4.1, 4.2, 4.3, 4.4_
 
-  - [~] 13.3 Create Competitors section page
+  - [ ] 13.3 Create Competitors section page
     - Create `app/(dashboard)/workspace/[id]/competitors/page.tsx`
     - Display competitor analysis with detailed cards
     - Add competitor comparison table
@@ -409,7 +409,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 10: Business Strategist Agent
 
 - [ ] 14. Implement Business Strategist AI agent
-  - [~] 14.1 Create Business Strategist prompt template and output schema
+  - [ ] 14.1 Create Business Strategist prompt template and output schema
     - Define Zod schema for business model (canvas: 9 blocks, revenueModels: 2-5, pricingTiers: 2+)
     - Create system prompt: "You are a business strategist who has advised 100+ startups"
     - Implement user prompt builder including overview + market research context
@@ -417,7 +417,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/lib/ai/agents/business-strategist.ts`, `apps/web/lib/validators/business-model.schema.ts`
     - _Requirements: 5.1, 5.2, 5.3_
 
-  - [~] 14.2 Create Business Model section UI with card-based layout
+  - [ ] 14.2 Create Business Model section UI with card-based layout
     - Create `app/(dashboard)/workspace/[id]/business-model/page.tsx`
     - Build Business Model Canvas as 9-block grid layout
     - Create revenue model cards with description and mechanism
@@ -432,7 +432,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 11: Technical Architect Agent
 
 - [ ] 15. Implement Technical Architect AI agent
-  - [~] 15.1 Create Technical Architect prompt template and output schema
+  - [ ] 15.1 Create Technical Architect prompt template and output schema
     - Define Zod schema for architecture (techStack: 3-8 items with justifications, architecture description, assumptions[])
     - Create system prompt: "You are a senior technical architect"
     - Implement user prompt builder with overview context
@@ -440,7 +440,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/lib/ai/agents/technical-architect.ts`, `apps/web/lib/validators/architecture.schema.ts`
     - _Requirements: 6.1, 6.2, 6.5_
 
-  - [~] 15.2 Create Architecture section UI
+  - [ ] 15.2 Create Architecture section UI
     - Create `app/(dashboard)/workspace/[id]/architecture/page.tsx`
     - Build tech stack display as categorized cards with justification tooltips
     - Display architecture diagram description in formatted markdown
@@ -455,7 +455,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 12: Database Designer Agent
 
 - [ ] 16. Implement Database Designer AI agent
-  - [~] 16.1 Create Database Designer prompt template and output schema
+  - [ ] 16.1 Create Database Designer prompt template and output schema
     - Define Zod schema for database (tables: 3+ with names, fields[], relationships[])
     - Create system prompt: "You are a database architect. Use PostgreSQL conventions."
     - Implement user prompt builder including architecture context
@@ -463,7 +463,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/lib/ai/agents/database-designer.ts`, `apps/web/lib/validators/database.schema.ts`
     - _Requirements: 6.3_
 
-  - [~] 16.2 Create Database section UI with schema visualization
+  - [ ] 16.2 Create Database section UI with schema visualization
     - Create `app/(dashboard)/workspace/[id]/database/page.tsx`
     - Display tables with field names, types, and constraints
     - Show relationships between tables with visual connectors
@@ -475,7 +475,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - **Property 7: AI Output Structure Validation** — verify ≥3 tables with field definitions
     - **Validates: Requirements 6.3**
 
-- [~] 17. Checkpoint - Verify AI agents (Product Analyst through Database Designer)
+- [ ] 17. Checkpoint - Verify AI agents (Product Analyst through Database Designer)
   - Ensure all 5 agents generate valid structured output
   - Ensure streaming works end-to-end in browser
   - Ensure credit deduction occurs correctly
@@ -484,7 +484,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 13: API Planner Agent
 
 - [ ] 18. Implement API Planner AI agent
-  - [~] 18.1 Create API Planner prompt template and output schema
+  - [ ] 18.1 Create API Planner prompt template and output schema
     - Define Zod schema for API design (endpoints: 5+ with path, method, description, request, response)
     - Create system prompt: "You are a backend API designer. Follow REST conventions."
     - Implement user prompt builder including database + architecture context
@@ -492,7 +492,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/lib/ai/agents/api-planner.ts`, `apps/web/lib/validators/api-design.schema.ts`
     - _Requirements: 6.4_
 
-  - [~] 18.2 Create API Design section UI
+  - [ ] 18.2 Create API Design section UI
     - Create `app/(dashboard)/workspace/[id]/api-design/page.tsx`
     - Display endpoints in tabular format with method badges (GET, POST, etc.)
     - Show request/response structure in collapsible code blocks
@@ -507,7 +507,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 14: UI/UX Designer Agent
 
 - [ ] 19. Implement UI/UX Designer AI agent
-  - [~] 19.1 Create UI/UX Designer prompt template and output schema
+  - [ ] 19.1 Create UI/UX Designer prompt template and output schema
     - Define Zod schema for UI/UX (userFlows: 3+, landingPage copy, wireframes: 3+, designSystem with colors and typography)
     - Create system prompt: "You are a product designer at a top design agency"
     - Implement user prompt builder including overview + target audience context
@@ -515,7 +515,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/lib/ai/agents/ui-designer.ts`, `apps/web/lib/validators/ui-ux.schema.ts`
     - _Requirements: 7.1, 7.2, 7.3, 7.4_
 
-  - [~] 19.2 Create UI/UX section UI with structured display
+  - [ ] 19.2 Create UI/UX section UI with structured display
     - Create `app/(dashboard)/workspace/[id]/ui-ux/page.tsx`
     - Display user flows as step-by-step sequences
     - Show landing page copy in preview format
@@ -530,7 +530,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 15: Marketing Strategist Agent
 
 - [ ] 20. Implement Marketing Strategist AI agent
-  - [~] 20.1 Create Marketing Strategist prompt template and output schema
+  - [ ] 20.1 Create Marketing Strategist prompt template and output schema
     - Define Zod schema (channels: 3+, seo: keywords 5+, launchChecklist: 3 tasks/phase, socialMedia: 3+ platforms with 2+ tactics)
     - Create system prompt: "You are a growth marketing expert"
     - Implement user prompt builder with overview + market + business model context
@@ -538,7 +538,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/lib/ai/agents/marketing-strategist.ts`, `apps/web/lib/validators/marketing.schema.ts`
     - _Requirements: 8.1, 8.2, 8.3, 8.4_
 
-  - [~] 20.2 Create Marketing section UI
+  - [ ] 20.2 Create Marketing section UI
     - Create `app/(dashboard)/workspace/[id]/marketing/page.tsx`
     - Display channels as strategy cards
     - Show SEO keywords in tag format, content strategy as list
@@ -554,7 +554,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 16: Roadmap Planner Agent
 
 - [ ] 21. Implement Roadmap Planner AI agent
-  - [~] 21.1 Create Roadmap Planner prompt template and output schema
+  - [ ] 21.1 Create Roadmap Planner prompt template and output schema
     - Define Zod schema (phases: MVP/Phase2/Phase3, milestones: 3+/phase, timelineWeeks: 2-26, features with impact/effort 1-5)
     - Create system prompt: "You are a product manager with startup experience"
     - Implement user prompt builder with architecture + database + API + business model context
@@ -562,7 +562,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/lib/ai/agents/roadmap-planner.ts`, `apps/web/lib/validators/roadmap.schema.ts`
     - _Requirements: 9.1, 9.2, 9.3_
 
-  - [~] 21.2 Create Roadmap section UI with timeline display
+  - [ ] 21.2 Create Roadmap section UI with timeline display
     - Create `app/(dashboard)/workspace/[id]/roadmap/page.tsx`
     - Display phases as timeline with milestone markers
     - Show features within each phase sorted by impact/effort ratio
@@ -577,7 +577,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 17: Investor Assistant Agent
 
 - [ ] 22. Implement Investor Assistant AI agent
-  - [~] 22.1 Create Investor Assistant prompt template and output schema
+  - [ ] 22.1 Create Investor Assistant prompt template and output schema
     - Define Zod schema (slides: 8 required types, content ≤150 words/slide, speakerNotes: 3-5/slide)
     - Create system prompt: "You are an investor relations expert"
     - Implement user prompt builder with ALL workspace sections as context
@@ -585,7 +585,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/lib/ai/agents/investor-assistant.ts`, `apps/web/lib/validators/pitch-deck.schema.ts`
     - _Requirements: 10.1, 10.2, 10.3_
 
-  - [~] 22.2 Create Pitch Deck section UI with slide cards
+  - [ ] 22.2 Create Pitch Deck section UI with slide cards
     - Create `app/(dashboard)/workspace/[id]/pitch-deck/page.tsx`
     - Display slides as card carousel with content and speaker notes toggle
     - Show word count indicator per slide
@@ -597,7 +597,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - **Property 7: AI Output Structure Validation** — verify 8 slides, ≤150 words/slide, 3-5 speaker notes/slide
     - **Validates: Requirements 10.1, 10.2, 10.3**
 
-- [~] 23. Checkpoint - Verify all AI agents
+- [ ] 23. Checkpoint - Verify all AI agents
   - Ensure all 10 AI agents produce valid structured output
   - Ensure context dependency chain works (later agents use earlier outputs)
   - Ensure all tests pass, ask the user if questions arise.
@@ -605,7 +605,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 18: Content Editing & Regeneration
 
 - [ ] 24. Implement content editing with Tiptap
-  - [~] 24.1 Set up Tiptap rich text editor component
+  - [ ] 24.1 Set up Tiptap rich text editor component
     - Install Tiptap with extensions (StarterKit, Markdown, Placeholder, CharacterCount)
     - Create `ContentEditor` component wrapping Tiptap
     - Configure toolbar with formatting options (bold, italic, headings, lists, links)
@@ -613,7 +613,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/components/editor/content-editor.tsx`, `apps/web/components/editor/toolbar.tsx`
     - _Requirements: 11.1_
 
-  - [~] 24.2 Implement auto-save with debounce and version history
+  - [ ] 24.2 Implement auto-save with debounce and version history
     - Add 3-second debounced auto-save on content change
     - Save changes to section table and create version entry
     - Implement version history panel (drawer) showing timestamp and source
@@ -621,7 +621,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/hooks/use-auto-save.ts`, `apps/web/components/editor/version-history.tsx`, `apps/web/app/api/sections/[id]/versions/route.ts`
     - _Requirements: 11.2, 11.5, 11.6_
 
-  - [~] 24.3 Implement content locking and selective regeneration
+  - [ ] 24.3 Implement content locking and selective regeneration
     - Add block-level lock toggle (lock icon on each content block)
     - Implement regeneration API that preserves locked content blocks
     - Show locked blocks with visual indicator (lock badge, slight opacity change)
@@ -635,7 +635,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - **Property 12: Version Restore Creates New Entry** — verify version count increments on restore
     - **Validates: Requirements 11.2, 11.3, 11.4, 11.5, 11.6**
 
-- [~] 25. Checkpoint - Verify content editing
+- [ ] 25. Checkpoint - Verify content editing
   - Ensure inline editing works with auto-save
   - Ensure version history displays correctly
   - Ensure locked blocks survive regeneration
@@ -644,7 +644,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 19: AI Chat
 
 - [ ] 26. Implement context-aware AI chat
-  - [~] 26.1 Create AI Chat API route with workspace context
+  - [ ] 26.1 Create AI Chat API route with workspace context
     - Create `app/api/workspaces/[id]/chat/route.ts` (POST for send, GET for history)
     - Implement context injection: fetch all workspace sections as chat context
     - Use Vercel AI SDK's `streamText()` for streaming responses
@@ -652,7 +652,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/app/api/workspaces/[id]/chat/route.ts`
     - _Requirements: 12.1, 12.2, 14.6_
 
-  - [~] 26.2 Create AI Chat UI panel
+  - [ ] 26.2 Create AI Chat UI panel
     - Create `app/(dashboard)/workspace/[id]/chat/page.tsx`
     - Build message list with user/assistant message bubbles
     - Implement streaming response display with typing indicator
@@ -661,7 +661,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/app/(dashboard)/workspace/[id]/chat/page.tsx`, `apps/web/components/ai/chat-panel.tsx`, `apps/web/components/ai/message-list.tsx`
     - _Requirements: 12.2, 12.4, 12.7_
 
-  - [~] 26.3 Implement section change preview from chat
+  - [ ] 26.3 Implement section change preview from chat
     - When AI suggests section changes, show preview modal with diff
     - Require user confirmation before applying changes
     - Apply confirmed changes and create version history entry
@@ -676,7 +676,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 20: Subscription & Billing
 
 - [ ] 27. Implement Stripe subscription and credit system
-  - [~] 27.1 Create Stripe integration and checkout flow
+  - [ ] 27.1 Create Stripe integration and checkout flow
     - Install `stripe` and `@stripe/stripe-js`
     - Create `lib/billing/stripe.ts` with Stripe client initialization
     - Implement `app/api/billing/checkout/route.ts` for creating checkout sessions
@@ -684,7 +684,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/lib/billing/stripe.ts`, `apps/web/app/api/billing/checkout/route.ts`, `apps/web/app/(dashboard)/billing/page.tsx`
     - _Requirements: 14.1, 14.4_
 
-  - [~] 27.2 Create Stripe webhook handler for subscription events
+  - [ ] 27.2 Create Stripe webhook handler for subscription events
     - Create `app/api/webhooks/stripe/route.ts`
     - Handle events: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.payment_failed`
     - Update user plan, credits, and subscription status in database
@@ -692,7 +692,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/app/api/webhooks/stripe/route.ts`
     - _Requirements: 14.4, 14.7_
 
-  - [~] 27.3 Create credit display and management UI
+  - [ ] 27.3 Create credit display and management UI
     - Build credits badge showing remaining/total in dashboard header
     - Create credits usage history page with transaction log
     - Implement upgrade prompt when credits exhausted (no dead ends)
@@ -700,7 +700,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/components/billing/credits-display.tsx`, `apps/web/components/billing/upgrade-prompt.tsx`
     - _Requirements: 14.2, 14.3, 14.8_
 
-  - [~] 27.4 Implement monthly credit reset with Inngest
+  - [ ] 27.4 Implement monthly credit reset with Inngest
     - Create Inngest function triggered on billing cycle anniversary
     - Reset credits to plan's `monthlyCredits` value (no carry-over)
     - Log credit reset in `credit_transactions` table
@@ -715,14 +715,14 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 21: File Management
 
 - [ ] 28. Implement file upload and management
-  - [~] 28.1 Create file upload API and storage integration
+  - [ ] 28.1 Create file upload API and storage integration
     - Create `app/api/workspaces/[id]/files/route.ts` (POST upload, GET list, DELETE)
     - Implement Supabase Storage upload with path: `workspaces/{id}/files/{fileId}`
     - Validate file size (≤10MB), format (PDF, PNG, JPG, DOCX, TXT), count (≤50/workspace)
     - Files: `apps/web/app/api/workspaces/[id]/files/route.ts`, `apps/web/lib/services/file.service.ts`
     - _Requirements: 16.2, 16.4_
 
-  - [~] 28.2 Create Files section UI
+  - [ ] 28.2 Create Files section UI
     - Create `app/(dashboard)/workspace/[id]/files/page.tsx`
     - Build file upload dropzone with drag-and-drop support
     - Display file list with filename, size, upload date, download button
@@ -738,7 +738,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 22: Data Export
 
 - [ ] 29. Implement workspace export (PDF and Markdown)
-  - [~] 29.1 Create export API and PDF generation
+  - [ ] 29.1 Create export API and PDF generation
     - Create `app/api/workspaces/[id]/export/route.ts` (POST to start export)
     - Implement PDF generation using `@react-pdf/renderer` or `puppeteer`
     - Include workspace name and export timestamp in header
@@ -747,7 +747,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/app/api/workspaces/[id]/export/route.ts`, `apps/web/lib/export/pdf-generator.ts`
     - _Requirements: 17.1, 17.3, 17.4, 17.5_
 
-  - [~] 29.2 Create Markdown export and download UI
+  - [ ] 29.2 Create Markdown export and download UI
     - Implement Markdown export: concatenate all sections with proper headings
     - Create export modal with format selection (PDF/Markdown)
     - Show export progress indicator and download link on completion
@@ -762,7 +762,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 23: Notes
 
 - [ ] 30. Implement Notes section
-  - [~] 30.1 Create Notes section with rich text editor
+  - [ ] 30.1 Create Notes section with rich text editor
     - Create `app/(dashboard)/workspace/[id]/notes/page.tsx`
     - Reuse Tiptap `ContentEditor` component from Epic 18
     - Support: bold, italic, underline, headings, bulleted/numbered lists, hyperlinks
@@ -770,7 +770,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/app/(dashboard)/workspace/[id]/notes/page.tsx`
     - _Requirements: 16.1_
 
-- [~] 31. Checkpoint - Verify features (Chat, Billing, Files, Export, Notes)
+- [ ] 31. Checkpoint - Verify features (Chat, Billing, Files, Export, Notes)
   - Ensure AI chat responds with workspace context
   - Ensure Stripe webhook updates plan and credits
   - Ensure file upload/download works end-to-end
@@ -780,21 +780,21 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 24: Responsive UI & Accessibility
 
 - [ ] 32. Implement responsive design and accessibility
-  - [~] 32.1 Implement responsive layouts for all pages
+  - [ ] 32.1 Implement responsive layouts for all pages
     - Audit and fix all pages for viewport widths 320px to 2560px
     - Implement responsive sidebar (collapsible on mobile, drawer pattern)
     - Create mobile-optimized workspace navigation (bottom tabs)
     - Ensure no horizontal scrolling or content overlap at any viewport
     - _Requirements: 15.1_
 
-  - [~] 32.2 Implement keyboard navigation and focus management
+  - [ ] 32.2 Implement keyboard navigation and focus management
     - Add visible focus indicators to all interactive elements
     - Implement keyboard shortcuts: Tab navigation, Enter to submit, Escape to close
     - Add skip-to-content link
     - Ensure all primary workflows keyboard-accessible (idea submission, navigation, editing, chat, export)
     - _Requirements: 15.3, 15.4_
 
-  - [~] 32.3 Implement ARIA attributes and screen reader support
+  - [ ] 32.3 Implement ARIA attributes and screen reader support
     - Add ARIA live regions for AI generation status announcements
     - Ensure all interactive elements have accessible labels
     - Add ARIA landmarks (navigation, main, complementary)
@@ -805,7 +805,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 25: Testing
 
 - [ ] 33. Implement comprehensive test suite
-  - [~] 33.1 Configure Vitest and testing infrastructure
+  - [ ] 33.1 Configure Vitest and testing infrastructure
     - Install Vitest, `@testing-library/react`, `fast-check`
     - Create `vitest.config.ts` with path aliases and coverage configuration
     - Create test utilities: mock Prisma client, mock AI provider, test fixtures
@@ -813,7 +813,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/vitest.config.ts`, `apps/web/tests/setup.ts`, `apps/web/tests/utils/`
     - _Requirements: N/A (infrastructure)_
 
-  - [~] 33.2 Write unit tests for validators and utilities
+  - [ ] 33.2 Write unit tests for validators and utilities
     - Test all Zod validators: idea, workspace name, chat message, file upload
     - Test credit arithmetic: deduction, refund, reset, balance check
     - Test prompt engine: template building, context assembly
@@ -821,7 +821,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/tests/unit/validators/`, `apps/web/tests/unit/services/`
     - _Requirements: 1.1, 1.3, 1.4, 2.4, 2.7, 14.6_
 
-  - [~] 33.3 Write integration tests for API routes and services
+  - [ ] 33.3 Write integration tests for API routes and services
     - Test workspace CRUD with real database operations
     - Test AI generation pipeline with mocked AI provider
     - Test credit deduction atomicity under concurrent requests
@@ -855,7 +855,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/tests/properties/`
     - **Validates: All 20 correctness properties from design**
 
-  - [~] 33.5 Configure Playwright and write E2E tests
+  - [ ] 33.5 Configure Playwright and write E2E tests
     - Install Playwright with chromium browser
     - Create E2E tests for critical paths:
       - Signup → idea submission → workspace creation → overview generation
@@ -868,7 +868,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 26: Deployment & Monitoring
 
 - [ ] 34. Set up production deployment and monitoring
-  - [~] 34.1 Configure Vercel deployment and environment
+  - [ ] 34.1 Configure Vercel deployment and environment
     - Set up Vercel project linked to GitHub repository
     - Configure environment variables for production (Clerk, Stripe, Gemini, Supabase, Upstash keys)
     - Set up preview deployments for PRs
@@ -876,7 +876,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `vercel.json`
     - _Requirements: N/A (infrastructure)_
 
-  - [~] 34.2 Set up Supabase production database and migrations
+  - [ ] 34.2 Set up Supabase production database and migrations
     - Create Supabase production project
     - Configure database connection pooling (PgBouncer)
     - Run initial migrations against production database
@@ -884,7 +884,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Seed production plans data
     - _Requirements: N/A (infrastructure)_
 
-  - [~] 34.3 Configure Sentry error tracking and Axiom logging
+  - [ ] 34.3 Configure Sentry error tracking and Axiom logging
     - Install `@sentry/nextjs` and configure DSN
     - Create Sentry project with source maps upload
     - Install Axiom logger and configure structured logging
@@ -893,14 +893,14 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `apps/web/sentry.client.config.ts`, `apps/web/sentry.server.config.ts`, `apps/web/lib/logging.ts`
     - _Requirements: N/A (infrastructure)_
 
-  - [~] 34.4 Configure Inngest for production background jobs
+  - [ ] 34.4 Configure Inngest for production background jobs
     - Set up Inngest account and connect to Vercel deployment
     - Register all background functions (generation, credit reset, export)
     - Configure retry policies and concurrency limits
     - Files: `apps/web/app/api/inngest/route.ts`, `apps/web/lib/jobs/`
     - _Requirements: 3.1, 14.5_
 
-  - [~] 34.5 Set up Upstash Redis for production caching
+  - [ ] 34.5 Set up Upstash Redis for production caching
     - Create Upstash Redis instance with global replication
     - Configure rate limiting with Upstash Ratelimit
     - Implement caching for credit balance, workspace metadata, section content
@@ -911,7 +911,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
 ### Epic 27: Documentation
 
 - [ ] 35. Create project documentation
-  - [~] 35.1 Create README and setup documentation
+  - [ ] 35.1 Create README and setup documentation
     - Write comprehensive README.md with project overview, architecture diagram, and tech stack
     - Create `docs/setup.md` with local development setup instructions
     - Document all environment variables with descriptions
@@ -919,7 +919,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `README.md`, `docs/setup.md`, `CONTRIBUTING.md`
     - _Requirements: N/A (documentation)_
 
-  - [~] 35.2 Create API documentation
+  - [ ] 35.2 Create API documentation
     - Document all API endpoints with request/response examples
     - Create OpenAPI/Swagger specification file
     - Document webhook payload formats (Clerk, Stripe)
@@ -927,7 +927,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `docs/api.md`, `docs/openapi.yaml`
     - _Requirements: N/A (documentation)_
 
-  - [~] 35.3 Create architecture and deployment documentation
+  - [ ] 35.3 Create architecture and deployment documentation
     - Document system architecture with diagrams
     - Create deployment guide for Vercel + Supabase + services
     - Document database schema and migration process
@@ -935,7 +935,7 @@ FounderOS AI is an AI-powered SaaS platform that generates complete startup blue
     - Files: `docs/architecture.md`, `docs/deployment.md`, `docs/runbook.md`
     - _Requirements: N/A (documentation)_
 
-- [~] 36. Final Checkpoint - Production readiness
+- [ ] 36. Final Checkpoint - Production readiness
   - Ensure all critical paths work in production environment
   - Ensure error tracking is capturing errors correctly
   - Ensure all 20 correctness properties pass

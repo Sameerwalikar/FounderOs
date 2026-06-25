@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String    @id @default(uuid()) @db.Uuid
+  clerkId          String    @unique @map("clerk_id")
+  email            String    @unique
+  name             String?
+  avatarUrl        String?   @map("avatar_url")
+  plan             String    @default("free")
+  creditsRemaining Int       @default(10) @map("credits_remaining")
+  creditResetDate  DateTime  @map("credit_reset_date")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+  deletedAt        DateTime? @map("deleted_at")
+
+  @@index([clerkId])
+  @@index([email])
+  @@map("users")
+}
