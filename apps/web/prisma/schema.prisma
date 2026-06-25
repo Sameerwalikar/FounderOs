@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -23,4 +24,44 @@ model User {
   @@index([clerkId])
   @@index([email])
   @@map("users")
+}
+
+model Workspace {
+  id              String    @id @default(uuid()) @db.Uuid
+  userId          String    @map("user_id")
+  name            String    @db.VarChar(100)
+  idea            String
+  industry        String?   @db.VarChar(100)
+  startupStage    String?   @default("idea") @map("startup_stage") @db.VarChar(50)
+  slug            String?   @db.VarChar(120)
+  status          String    @default("active")
+  lastGeneratedAt DateTime? @map("last_generated_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  archivedAt      DateTime? @map("archived_at")
+  deletedAt       DateTime? @map("deleted_at")
+
+  sections Section[]
+
+  @@index([userId, status])
+  @@index([updatedAt(sort: Desc)])
+  @@map("workspaces")
+}
+
+model Section {
+  id               String    @id @default(uuid()) @db.Uuid
+  workspaceId      String    @map("workspace_id") @db.Uuid
+  type             String    @db.VarChar(50)
+  content          String?
+  generationStatus String    @default("pending") @map("generation_status")
+  currentVersion   Int       @default(0) @map("current_version")
+  lastGeneratedAt  DateTime? @map("last_generated_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, type])
+  @@index([workspaceId])
+  @@map("sections")
 }

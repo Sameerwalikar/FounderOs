@@ -7,27 +7,31 @@ dist/
 out/
 build/
 
-# Environment files
+# Environment files (contains secrets)
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+*.env.local
 
 # IDE
 .idea/
 *.swp
 *.swo
+.vscode/settings.json
 
 # OS
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # Turbo
 .turbo/
 
 # Prisma
 apps/web/prisma/*.db
+apps/web/prisma/migrations/
 
 # Debug
 npm-debug.log*
@@ -40,3 +44,7 @@ yarn-error.log*
 
 # Vercel
 .vercel
+
+# Lock files (keep pnpm-lock.yaml, ignore others)
+package-lock.json
+yarn.lock

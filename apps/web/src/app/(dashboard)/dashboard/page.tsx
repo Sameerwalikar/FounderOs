@@ -1,20 +1,76 @@
 import type { Metadata } from "next";
+import { auth, currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 import { Rocket } from "lucide-react";
+import { getUserWorkspaces } from "@/lib/services/workspace.service";
+import { WorkspaceCard } from "@/components/workspace/workspace-card";
+import { CreateWorkspaceDialog } from "@/components/workspace/create-workspace-dialog";
+import { WorkspaceSearch } from "@/components/workspace/workspace-search";
 
 export const metadata: Metadata = {
   title: "Dashboard",
 };
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const { userId } = await auth();
+  if (!userId) redirect("/sign-in");
+
+  const user = await currentUser();
+  const workspaces = await getUserWorkspaces(userId);
+  const firstName = user?.firstName || "there";
+
   return (
-    <div className="flex flex-col items-center justify-center py-20">
-      <div className="mx-auto max-w-md text-center">
-        <Rocket className="mx-auto h-12 w-12 text-muted-foreground" />
-        <h1 className="mt-6 text-2xl font-bold">Your Workspaces</h1>
-        <p className="mt-2 text-muted-foreground">
-          No workspaces yet. Create your first one to get started.
-        </p>
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold">
+            Welcome back, {firstName}
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            {workspaces.length} workspace{workspaces.length !== 1 ? "s" : ""}
+          </p>
+        </div>
+        <CreateWorkspaceDialog />
       </div>
+
+      {/* Search */}
+      {workspaces.length > 0 && <WorkspaceSearch />}
+
+      {/* Workspace Grid or Empty State */}
+      {workspaces.length === 0 ? (
+        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-20">
+          <Rocket className="h-12 w-12 text-muted-foreground" />
+          <h2 className="mt-4 text-lg font-semibold">
+            Create your first startup blueprint
+          </h2>
+          <p className="mt-2 max-w-sm text-center text-sm text-muted-foreground">
+            Enter your startup idea and let AI generate a complete business
+            plan, market research, architecture, and more.
+          </p>
+          <div className="mt-6">
+            <CreateWorkspaceDialog />
+          </div>
+        </div>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {workspaces.map((w) => (
+            <WorkspaceCard
+              key={w.id}
+              id={w.id}
+              name={w.name}
+              idea={w.idea}
+              industry={w.industry}
+              updatedAt={w.updatedAt.toISOString()}
+              sectionsCompleted={
+                w.sections.filter((s) => s.generationStatus === "completed")
+                  .length
+              }
+              totalSections={w.sections.length}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
