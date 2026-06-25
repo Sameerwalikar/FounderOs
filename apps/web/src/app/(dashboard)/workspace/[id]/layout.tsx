@@ -1,8 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect, notFound } from "next/navigation";
 import { getWorkspace } from "@/lib/services/workspace.service";
-import { WorkspaceSidebar } from "@/components/workspace/workspace-sidebar";
-import { WorkspaceHeader } from "@/components/workspace/workspace-header";
+import { WorkspaceShell } from "@/components/workspace/workspace-shell";
 
 interface WorkspaceLayoutProps {
   children: React.ReactNode;
@@ -20,27 +19,28 @@ export default async function WorkspaceLayout({
   const workspace = await getWorkspace(userId, id);
   if (!workspace) notFound();
 
+  const blueprintSections = workspace.sections.filter(
+    (s) => s.type !== "ai-chat" && s.type !== "files" && s.type !== "settings",
+  );
+  const completedCount = blueprintSections.filter(
+    (s) => s.generationStatus === "completed",
+  ).length;
+
   return (
-    <div className="flex h-[calc(100vh-3.5rem)]">
-      <WorkspaceSidebar
-        workspaceId={workspace.id}
-        workspaceName={workspace.name}
-        sections={workspace.sections.map((s) => ({
-          type: s.type,
-          status: s.generationStatus,
-        }))}
-      />
-      <div className="flex flex-1 flex-col overflow-hidden">
-        <WorkspaceHeader
-          name={workspace.name}
-          industry={workspace.industry}
-          startupStage={workspace.startupStage}
-          status={workspace.status}
-          createdAt={workspace.createdAt.toISOString()}
-          updatedAt={workspace.updatedAt.toISOString()}
-        />
-        <main className="flex-1 overflow-y-auto p-6 lg:p-8">{children}</main>
-      </div>
-    </div>
+    <WorkspaceShell
+      workspaceId={workspace.id}
+      workspaceName={workspace.name}
+      industry={workspace.industry}
+      startupStage={workspace.startupStage}
+      completedSections={completedCount}
+      totalSections={blueprintSections.length}
+      hasGeneratedContent={completedCount > 0}
+      sections={workspace.sections.map((s) => ({
+        type: s.type,
+        status: s.generationStatus,
+      }))}
+    >
+      {children}
+    </WorkspaceShell>
   );
 }

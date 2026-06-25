@@ -6,5 +6,5 @@ interface WorkspacePageProps {
 
 export default async function WorkspacePage({ params }: WorkspacePageProps) {
   const { id } = await params;
-  redirect(`/dashboard/workspace/${id}/overview`);
+  redirect(`/workspace/${id}/overview`);
 }

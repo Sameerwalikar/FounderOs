@@ -68,7 +68,7 @@ export function CreateWorkspaceDialog() {
       const { data } = await res.json();
       setOpen(false);
       resetForm();
-      router.push(`/dashboard/workspace/${data.id}`);
+      router.push(`/workspace/${data.id}`);
       router.refresh();
     } catch {
       setError("Something went wrong. Please try again.");

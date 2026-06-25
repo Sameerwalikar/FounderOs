@@ -1,11 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Archive, MoreVertical, Pencil, Trash2 } from "lucide-react";
+import { Archive, Check, MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import { STAGE_LABELS } from "@/lib/validators/workspace";
 
 interface WorkspaceCardProps {
@@ -38,6 +39,10 @@ export function WorkspaceCard({
     ? STAGE_LABELS[startupStage as keyof typeof STAGE_LABELS]
     : null;
 
+  const isComplete = sectionsCompleted === totalSections && totalSections > 0;
+  const progressPercent =
+    totalSections > 0 ? (sectionsCompleted / totalSections) * 100 : 0;
+
   async function handleArchive() {
     setLoading(true);
     await fetch(`/api/workspaces/${id}`, {
@@ -68,7 +73,7 @@ export function WorkspaceCard({
   return (
     <Card
       className="group relative cursor-pointer transition-all duration-200 hover:border-primary/30 hover:shadow-md hover:shadow-primary/5"
-      onClick={() => router.push(`/dashboard/workspace/${id}`)}
+      onClick={() => router.push(`/workspace/${id}`)}
     >
       <CardHeader className="flex-row items-start justify-between space-y-0 pb-3">
         <div className="min-w-0 flex-1 space-y-1">
@@ -82,6 +87,12 @@ export function WorkspaceCard({
             {stageLabel && (
               <Badge variant="outline" className="text-[10px]">
                 {stageLabel}
+              </Badge>
+            )}
+            {isComplete && (
+              <Badge className="bg-green-500/10 text-[10px] text-green-500 border-green-500/20">
+                <Check className="mr-0.5 h-2.5 w-2.5" />
+                Complete
               </Badge>
             )}
           </div>
@@ -145,21 +156,33 @@ export function WorkspaceCard({
       </CardHeader>
       <CardContent>
         <p className="line-clamp-2 text-sm text-muted-foreground">{idea}</p>
-        <div className="mt-4 flex items-center justify-between">
-          <div className="flex items-center gap-1.5">
-            <div className="h-1.5 w-16 overflow-hidden rounded-full bg-muted">
-              <div
-                className="h-full rounded-full bg-primary transition-all"
-                style={{
-                  width: `${totalSections > 0 ? (sectionsCompleted / totalSections) * 100 : 0}%`,
-                }}
-              />
-            </div>
-            <span className="text-xs text-muted-foreground">
-              {sectionsCompleted}/{totalSections}
-            </span>
+
+        {/* Progress Section */}
+        <div className="mt-4 space-y-2">
+          <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+            <div
+              className={cn(
+                "h-full rounded-full transition-all duration-500",
+                isComplete ? "bg-green-500" : "bg-primary",
+              )}
+              style={{ width: `${progressPercent}%` }}
+            />
           </div>
-          <span className="text-xs text-muted-foreground">{relativeTime}</span>
+          <div className="flex items-center justify-between text-xs">
+            <span
+              className={cn(
+                "font-medium",
+                isComplete ? "text-green-500" : "text-muted-foreground",
+              )}
+            >
+              {isComplete
+                ? "Blueprint Complete"
+                : sectionsCompleted > 0
+                  ? `${sectionsCompleted} / ${totalSections} Sections`
+                  : "Not generated"}
+            </span>
+            <span className="text-muted-foreground">{relativeTime}</span>
+          </div>
         </div>
       </CardContent>
     </Card>
