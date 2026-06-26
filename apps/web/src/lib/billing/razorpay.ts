@@ -7,10 +7,14 @@ const razorpay = new Razorpay({
 });
 
 export async function createOrder(amount: number, userId: string, plan: string) {
+  // Receipt must be max 40 chars — use short hash
+  const shortId = userId.slice(-8);
+  const receipt = `${shortId}_${plan}_${Date.now().toString(36)}`.slice(0, 40);
+
   const order = await razorpay.orders.create({
     amount: amount * 100, // Razorpay expects paise
     currency: "INR",
-    receipt: `${userId}_${plan}_${Date.now()}`,
+    receipt,
     notes: { userId, plan },
   });
   return order;

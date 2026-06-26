@@ -119,11 +119,16 @@ export function AppSidebar({
         <div className="flex justify-center">
           <ThemeToggle />
         </div>
-        <div className="flex justify-center">
+        <div className="flex items-center justify-center gap-2 rounded-lg border border-border/40 p-2 lg:justify-start lg:px-3">
           {mounted && (
             <UserButton
               afterSignOutUrl="/"
-              appearance={{ elements: { avatarBox: "h-8 w-8" } }}
+              appearance={{
+                elements: {
+                  avatarBox: "h-8 w-8 ring-2 ring-primary/20",
+                  userButtonTrigger: "focus:shadow-none",
+                },
+              }}
             />
           )}
           {!mounted && (
