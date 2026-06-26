@@ -80,3 +80,48 @@ model ChatMessage {
   @@index([workspaceId, createdAt(sort: Desc)])
   @@map("chat_messages")
 }
+
+model Subscription {
+  id                    String    @id @default(uuid()) @db.Uuid
+  userId                String    @map("user_id")
+  plan                  String    @default("free")
+  status                String    @default("active")
+  creditsRemaining      Int       @default(10) @map("credits_remaining")
+  monthlyCredits        Int       @default(10) @map("monthly_credits")
+  razorpayCustomerId    String?   @map("razorpay_customer_id")
+  razorpaySubscriptionId String?  @map("razorpay_subscription_id")
+  renewalDate           DateTime? @map("renewal_date")
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+
+  @@unique([userId])
+  @@index([userId])
+  @@map("subscriptions")
+}
+
+model Payment {
+  id                String   @id @default(uuid()) @db.Uuid
+  userId            String   @map("user_id")
+  amount            Int
+  currency          String   @default("INR") @db.VarChar(10)
+  status            String   @default("pending")
+  razorpayOrderId   String?  @map("razorpay_order_id")
+  razorpayPaymentId String?  @map("razorpay_payment_id")
+  plan              String
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@map("payments")
+}
+
+model CreditTransaction {
+  id               String   @id @default(uuid()) @db.Uuid
+  userId           String   @map("user_id")
+  action           String
+  creditsUsed      Int      @map("credits_used")
+  creditsRemaining Int      @map("credits_remaining")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@map("credit_transactions")
+}

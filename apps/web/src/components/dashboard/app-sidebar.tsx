@@ -3,7 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UserButton } from "@clerk/nextjs";
-import { CreditCard, LayoutDashboard, Settings } from "lucide-react";
+import {
+  CreditCard,
+  LayoutDashboard,
+  Settings,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
@@ -14,13 +18,26 @@ const navItems = [
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 
-export function AppSidebar() {
+interface AppSidebarProps {
+  creditsRemaining?: number;
+  creditsTotal?: number;
+}
+
+export function AppSidebar({
+  creditsRemaining,
+  creditsTotal,
+}: AppSidebarProps) {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const creditPercent =
+    creditsRemaining !== undefined && creditsTotal
+      ? (creditsRemaining / creditsTotal) * 100
+      : null;
 
   return (
     <aside className="flex w-14 flex-col items-center border-r border-border/50 bg-card/50 py-4 lg:w-56 lg:items-stretch lg:px-3">
@@ -37,18 +54,24 @@ export function AppSidebar() {
         </span>
       </Link>
 
+      {/* Separator */}
+      <div className="mx-2 mt-5 border-t border-border/40 lg:mx-0" />
+
       {/* Navigation */}
-      <nav className="mt-6 flex flex-1 flex-col gap-1" aria-label="Main">
+      <nav className="mt-4 flex flex-1 flex-col gap-1" aria-label="Main">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive =
-            pathname === item.href || pathname.startsWith(item.href + "/");
+            item.href === "/dashboard"
+              ? pathname === "/dashboard"
+              : pathname === item.href ||
+                pathname.startsWith(item.href + "/");
           return (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center justify-center gap-3 rounded-lg px-2 py-2 text-sm font-medium transition-colors lg:justify-start lg:px-3",
+                "relative flex items-center justify-center gap-3 rounded-lg px-2 py-2.5 text-sm font-medium transition-colors lg:justify-start lg:px-3",
                 isActive
                   ? "bg-accent text-accent-foreground"
                   : "text-muted-foreground hover:bg-accent/50 hover:text-foreground",
@@ -56,15 +79,43 @@ export function AppSidebar() {
               aria-current={isActive ? "page" : undefined}
               title={item.label}
             >
-              <Icon className="h-4 w-4 shrink-0" />
+              {/* Active left accent */}
+              {isActive && (
+                <span className="absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-full bg-primary" />
+              )}
+              <Icon className="h-5 w-5 shrink-0" />
               <span className="hidden lg:inline">{item.label}</span>
             </Link>
           );
         })}
       </nav>
 
-      {/* Bottom: Theme + User */}
-      <div className="mt-auto flex flex-col items-center gap-3 lg:items-stretch">
+      {/* Separator */}
+      <div className="mx-2 border-t border-border/40 lg:mx-0" />
+
+      {/* Bottom: Credits + Theme + User */}
+      <div className="mt-3 flex flex-col items-center gap-3 lg:items-stretch">
+        {/* Credits mini-bar */}
+        {creditPercent !== null && (
+          <div className="hidden w-full flex-col gap-1 px-1 lg:flex">
+            <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+              <span>Credits</span>
+              <span>
+                {creditsRemaining}/{creditsTotal}
+              </span>
+            </div>
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+              <div
+                className={cn(
+                  "h-full rounded-full transition-all",
+                  creditPercent > 30 ? "bg-primary" : "bg-amber-500",
+                )}
+                style={{ width: `${creditPercent}%` }}
+              />
+            </div>
+          </div>
+        )}
+
         <div className="flex justify-center">
           <ThemeToggle />
         </div>
