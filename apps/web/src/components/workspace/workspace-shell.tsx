@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   ArrowLeft,
   Download,
+  FileText,
   Loader2,
   Sparkles,
 } from "lucide-react";
@@ -12,6 +13,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { generatePDFReport } from "@/lib/export/pdf-generator";
 import {
   BLUEPRINT_SECTIONS,
   SECTION_META,
@@ -71,8 +73,25 @@ export function WorkspaceShell({
     }
   }
 
-  function handleExport() {
+  function handleExportMarkdown() {
     window.open(`/api/workspaces/${workspaceId}/export`, "_blank");
+  }
+
+  function handleExportPDF() {
+    // Fetch workspace data and generate PDF client-side
+    fetch(`/api/workspaces/${workspaceId}`)
+      .then((res) => res.json())
+      .then(({ data }) => {
+        generatePDFReport({
+          name: data.name,
+          idea: data.idea,
+          industry: data.industry,
+          startupStage: data.startupStage,
+          createdAt: data.createdAt,
+          sections: data.sections,
+        });
+      })
+      .catch((err) => console.error("PDF export failed:", err));
   }
 
   function getStatusDot(type: string) {
@@ -136,11 +155,22 @@ export function WorkspaceShell({
             variant="ghost"
             size="icon"
             className="h-8 w-8"
-            onClick={handleExport}
+            onClick={handleExportMarkdown}
             disabled={!hasGeneratedContent}
             title="Export as Markdown"
           >
             <Download className="h-3.5 w-3.5" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={handleExportPDF}
+            disabled={!hasGeneratedContent}
+            title="Export as PDF Report"
+          >
+            <FileText className="h-3.5 w-3.5" />
           </Button>
         </div>
       </div>

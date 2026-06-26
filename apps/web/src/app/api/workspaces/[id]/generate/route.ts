@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getWorkspace } from "@/lib/services/workspace.service";
 import { generateSection } from "@/lib/ai/orchestrator";
+import { deductCredits, getOrCreateSubscription } from "@/lib/billing/subscription.service";
+import { CREDIT_COSTS } from "@/lib/constants/plans";
 import { BLUEPRINT_SECTIONS } from "@/lib/constants/sections";
 import type { BlueprintSection } from "@/lib/constants/sections";
 
@@ -40,6 +42,28 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
     return NextResponse.json(
       { error: "Invalid section type" },
       { status: 400 },
+    );
+  }
+
+  // Check and deduct credits
+  const creditsNeeded = requestedSection ? 1 : CREDIT_COSTS.GENERATE_BLUEPRINT;
+  const subscription = await getOrCreateSubscription(userId);
+
+  if (subscription.creditsRemaining < creditsNeeded) {
+    return NextResponse.json(
+      {
+        error: `Insufficient credits. You need ${creditsNeeded} credits but have ${subscription.creditsRemaining}.`,
+      },
+      { status: 402 },
+    );
+  }
+
+  // Deduct credits upfront
+  const deductResult = await deductCredits(userId, creditsNeeded, "generate_blueprint");
+  if (!deductResult.success) {
+    return NextResponse.json(
+      { error: deductResult.error || "Failed to deduct credits" },
+      { status: 402 },
     );
   }
 
