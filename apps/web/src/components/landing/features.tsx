@@ -1,13 +1,16 @@
+"use client";
+
 import {
   BarChart3,
   Brain,
   Code2,
   FileText,
   Lightbulb,
-  Rocket,
+  Palette,
   Target,
   TrendingUp,
 } from "lucide-react";
+import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 
 const features = [
   {
@@ -15,48 +18,64 @@ const features = [
     title: "AI Product Analysis",
     description:
       "Get instant feedback on your startup idea with problem validation and value proposition refinement.",
+    color: "text-violet-500",
+    bg: "bg-violet-500/10",
   },
   {
     icon: Target,
     title: "Market Research",
     description:
       "Competitor analysis, SWOT breakdown, and market sizing generated from your single-sentence idea.",
+    color: "text-blue-500",
+    bg: "bg-blue-500/10",
   },
   {
     icon: BarChart3,
     title: "Business Strategy",
     description:
       "Complete Business Model Canvas, revenue models, and pricing strategy tailored to your domain.",
+    color: "text-emerald-500",
+    bg: "bg-emerald-500/10",
   },
   {
     icon: Code2,
     title: "Technical Architecture",
     description:
       "Tech stack recommendations, database schema, and API design based on your product requirements.",
+    color: "text-orange-500",
+    bg: "bg-orange-500/10",
   },
   {
     icon: TrendingUp,
     title: "Marketing Plan",
     description:
       "Go-to-market strategy with SEO keywords, launch checklist, and social media playbook.",
+    color: "text-pink-500",
+    bg: "bg-pink-500/10",
   },
   {
-    icon: Lightbulb,
+    icon: Palette,
     title: "UI/UX Design",
     description:
       "User flows, wireframe descriptions, landing page copy, and design system recommendations.",
+    color: "text-cyan-500",
+    bg: "bg-cyan-500/10",
   },
   {
-    icon: Rocket,
+    icon: Lightbulb,
     title: "Development Roadmap",
     description:
       "Phased MVP plan with milestones, timelines, and feature prioritization by impact and effort.",
+    color: "text-yellow-500",
+    bg: "bg-yellow-500/10",
   },
   {
     icon: FileText,
     title: "Investor Pitch Deck",
     description:
       "Presentation-ready slides with speaker notes covering problem, solution, market, and financials.",
+    color: "text-red-500",
+    bg: "bg-red-500/10",
   },
 ];
 
@@ -74,20 +93,37 @@ export function Features() {
           </p>
         </div>
 
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((feature) => {
             const Icon = feature.icon;
             return (
-              <div
-                key={feature.title}
-                className="rounded-lg border border-border/50 bg-card p-6 transition-colors hover:border-border"
-              >
-                <Icon className="h-8 w-8 text-primary" />
-                <h3 className="mt-4 font-semibold">{feature.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {feature.description}
-                </p>
-              </div>
+              <CardContainer key={feature.title} className="inter-var">
+                <CardBody className="relative h-auto w-full rounded-xl border border-border/50 bg-card p-6 transition-shadow group-hover/card:shadow-2xl group-hover/card:shadow-primary/[0.05] dark:border-white/[0.1]">
+                  <CardItem translateZ="50">
+                    <div
+                      className={`flex h-10 w-10 items-center justify-center rounded-lg ${feature.bg}`}
+                    >
+                      <Icon className={`h-5 w-5 ${feature.color}`} />
+                    </div>
+                  </CardItem>
+                  <CardItem translateZ="40" className="mt-4">
+                    <h3 className="text-sm font-semibold">{feature.title}</h3>
+                  </CardItem>
+                  <CardItem
+                    as="p"
+                    translateZ="30"
+                    className="mt-2 text-xs leading-relaxed text-muted-foreground"
+                  >
+                    {feature.description}
+                  </CardItem>
+                  <CardItem
+                    translateZ="20"
+                    className="mt-4 text-[11px] font-medium text-primary"
+                  >
+                    Learn more →
+                  </CardItem>
+                </CardBody>
+              </CardContainer>
             );
           })}
         </div>

@@ -41,8 +41,8 @@ model Workspace {
   archivedAt      DateTime? @map("archived_at")
   deletedAt       DateTime? @map("deleted_at")
 
-  sections     Section[]
-  chatMessages ChatMessage[]
+  sections      Section[]
+  conversations Conversation[]
 
   @@index([userId, status])
   @@index([updatedAt(sort: Desc)])
@@ -68,17 +68,32 @@ model Section {
 }
 
 model ChatMessage {
-  id          String   @id @default(uuid()) @db.Uuid
-  workspaceId String   @map("workspace_id") @db.Uuid
-  userId      String   @map("user_id")
-  role        String   @db.VarChar(20)
-  content     String
-  createdAt   DateTime @default(now()) @map("created_at")
+  id             String   @id @default(uuid()) @db.Uuid
+  conversationId String   @map("conversation_id") @db.Uuid
+  userId         String   @map("user_id")
+  role           String   @db.VarChar(20)
+  content        String
+  createdAt      DateTime @default(now()) @map("created_at")
 
-  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
-  @@index([workspaceId, createdAt(sort: Desc)])
+  @@index([conversationId, createdAt(sort: Asc)])
   @@map("chat_messages")
+}
+
+model Conversation {
+  id          String    @id @default(uuid()) @db.Uuid
+  userId      String    @map("user_id")
+  title       String    @default("New Chat") @db.VarChar(200)
+  workspaceId String?   @map("workspace_id") @db.Uuid
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  messages ChatMessage[]
+  workspace Workspace? @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+
+  @@index([userId, updatedAt(sort: Desc)])
+  @@map("conversations")
 }
 
 model Subscription {

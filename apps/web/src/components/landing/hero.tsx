@@ -20,7 +20,8 @@ const floatingCards = [
         ))}
       </div>
     ),
-    className: "top-8 left-4",
+    // Top-left, touching globe border
+    className: "top-[60px] left-[10px]",
     delay: 0,
   },
   {
@@ -31,7 +32,8 @@ const floatingCards = [
         <p className="text-xs text-muted-foreground">Projected Year 2</p>
       </div>
     ),
-    className: "top-2 right-0",
+    // Top-right, touching globe border
+    className: "top-[40px] right-[10px]",
     delay: 0.5,
   },
   {
@@ -56,20 +58,24 @@ const floatingCards = [
         </div>
       </div>
     ),
-    className: "bottom-16 left-8",
+    // Bottom-left, touching globe border
+    className: "bottom-[60px] left-[10px]",
     delay: 1,
   },
   {
     title: "Startup Score",
     content: (
       <div className="mt-2">
-        <p className="text-3xl font-bold text-primary">86<span className="text-lg text-muted-foreground">/100</span></p>
+        <p className="text-3xl font-bold text-primary">
+          86<span className="text-lg text-muted-foreground">/100</span>
+        </p>
         <div className="mt-1 h-2 w-full overflow-hidden rounded-full bg-muted">
           <div className="h-full w-[86%] rounded-full bg-primary" />
         </div>
       </div>
     ),
-    className: "bottom-4 right-4",
+    // Bottom-right, touching globe border
+    className: "bottom-[40px] right-[10px]",
     delay: 1.5,
   },
 ];
@@ -88,9 +94,7 @@ export function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <span className="inline-flex items-center rounded-full border border-border/60 bg-muted/50 px-4 py-1.5 text-sm font-medium text-muted-foreground">
-                🚀 AI Startup Operating System
-              </span>
+             
             </motion.div>
 
             <motion.h1
@@ -100,9 +104,9 @@ export function Hero() {
               className="mt-6 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl"
             >
               Build Your Startup with an{" "}
-              <span className="bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">
-                AI Co-Founder
-              </span>
+              <span className="bg-gradient-to-r from-slate-900 via-indigo-700 to-indigo-500 dark:from-white dark:via-indigo-300 dark:to-indigo-500 bg-clip-text text-transparent">
+  AI Co-Founder
+</span>
             </motion.h1>
 
             <motion.p
@@ -128,7 +132,11 @@ export function Hero() {
                 </HoverBorderGradient>
               </Link>
               <Link href="#features">
-                <Button variant="outline" size="lg" className="h-11 rounded-full px-8 text-base">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="h-11 rounded-full px-8 text-base"
+                >
                   Watch Demo
                 </Button>
               </Link>
@@ -148,16 +156,76 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* Right side - Floating Cards (desktop only) */}
-          <div className="relative hidden h-[500px] lg:block">
-            {/* Radial glow behind cards */}
+          {/* Right side - Globe + Floating Cards */}
+          <div className="relative hidden h-[540px] lg:block">
+            {/* Radial glow behind globe */}
             <div
-              className="absolute left-1/2 top-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-20 blur-[80px]"
+              className="absolute left-1/2 top-1/2 h-[350px] w-[350px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-20 blur-[80px]"
               style={{
-                background: "radial-gradient(circle, hsl(239 84% 67% / 0.6) 0%, hsl(217 91% 60% / 0.3) 50%, transparent 70%)",
+                background:
+                  "radial-gradient(circle, hsl(239 84% 67% / 0.6) 0%, hsl(217 91% 60% / 0.3) 50%, transparent 70%)",
               }}
             />
 
+            {/* Globe (center) */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+            >
+              <div className="relative h-[260px] w-[260px]">
+                {/* Globe wireframe */}
+                <div className="absolute inset-0 rounded-full border border-primary/20" />
+                <div className="absolute inset-3 rounded-full border border-primary/15" />
+                <div className="absolute inset-6 rounded-full border border-primary/10" />
+
+                {/* Horizontal lines */}
+                <div className="absolute left-0 right-0 top-1/4 border-t border-primary/10" />
+                <div className="absolute left-0 right-0 top-1/2 border-t border-primary/15" />
+                <div className="absolute left-0 right-0 top-3/4 border-t border-primary/10" />
+
+                {/* Vertical ellipses */}
+                <div className="absolute inset-0 rounded-full border border-primary/10" style={{ transform: "rotateY(60deg)" }} />
+                <div className="absolute inset-0 rounded-full border border-primary/10" style={{ transform: "rotateY(-60deg)" }} />
+                <div className="absolute inset-0 rounded-full border border-primary/15" style={{ transform: "rotateY(30deg)" }} />
+                <div className="absolute inset-0 rounded-full border border-primary/15" style={{ transform: "rotateY(-30deg)" }} />
+
+                {/* Globe fill */}
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/5 to-blue-500/5" />
+
+                {/* Rotating ring */}
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                  className="absolute -inset-4 rounded-full border border-dashed border-primary/20"
+                />
+
+                {/* Pulsing dots on globe */}
+                <motion.div
+                  animate={{ opacity: [0.3, 1, 0.3] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="absolute left-[30%] top-[35%] h-2 w-2 rounded-full bg-primary"
+                />
+                <motion.div
+                  animate={{ opacity: [0.3, 1, 0.3] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: 0.7 }}
+                  className="absolute left-[60%] top-[25%] h-2 w-2 rounded-full bg-blue-500"
+                />
+                <motion.div
+                  animate={{ opacity: [0.3, 1, 0.3] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: 1.4 }}
+                  className="absolute left-[45%] top-[65%] h-2 w-2 rounded-full bg-green-500"
+                />
+                <motion.div
+                  animate={{ opacity: [0.3, 1, 0.3] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: 0.3 }}
+                  className="absolute left-[70%] top-[55%] h-1.5 w-1.5 rounded-full bg-amber-500"
+                />
+              </div>
+            </motion.div>
+
+            {/* Floating cards positioned around the globe (corners) */}
             {floatingCards.map((card) => (
               <motion.div
                 key={card.title}
@@ -165,7 +233,7 @@ export function Hero() {
                 animate={{
                   opacity: 1,
                   scale: 1,
-                  y: [0, -12, 0],
+                  y: [0, -10, 0],
                 }}
                 transition={{
                   opacity: { duration: 0.5, delay: card.delay },
@@ -178,9 +246,11 @@ export function Hero() {
                     delay: card.delay,
                   },
                 }}
-                className={`absolute w-56 rounded-xl border border-border/60 bg-card p-4 shadow-xl ${card.className}`}
+                className={`absolute w-48 rounded-xl border border-border/60 bg-card/90 p-3.5 shadow-lg backdrop-blur-sm ${card.className}`}
               >
-                <p className="text-xs font-medium text-muted-foreground">{card.title}</p>
+                <p className="text-[11px] font-medium text-muted-foreground">
+                  {card.title}
+                </p>
                 {card.content}
               </motion.div>
             ))}

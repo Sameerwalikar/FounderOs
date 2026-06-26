@@ -14,7 +14,8 @@ export interface ButtonProps
 }
 
 const buttonVariants = {
-  default: "bg-primary text-primary-foreground hover:bg-primary/90",
+  default:
+    "bg-gradient-to-r from-indigo-600 to-indigo-500 text-white shadow-sm hover:from-indigo-700 hover:to-indigo-600",
   destructive:
     "bg-destructive text-destructive-foreground hover:bg-destructive/90",
   outline:

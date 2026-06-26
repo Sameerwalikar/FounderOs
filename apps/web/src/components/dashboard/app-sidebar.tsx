@@ -6,6 +6,7 @@ import { UserButton } from "@clerk/nextjs";
 import {
   CreditCard,
   LayoutDashboard,
+  MessageSquare,
   Settings,
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -14,6 +15,7 @@ import { ThemeToggle } from "@/components/shared/theme-toggle";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/dashboard/ai", label: "AI Co-Founder", icon: MessageSquare },
   { href: "/dashboard/billing", label: "Billing", icon: CreditCard },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
@@ -46,9 +48,7 @@ export function AppSidebar({
         href="/dashboard"
         className="flex items-center justify-center gap-2 px-2 lg:justify-start"
       >
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground">
-          F
-        </span>
+        <img src="/logo.png" alt="FounderOS" className="h-8 w-8 shrink-0 rounded-lg" />
         <span className="hidden text-sm font-bold tracking-tight lg:block">
           FounderOS
         </span>

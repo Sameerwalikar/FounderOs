@@ -10,19 +10,19 @@
     --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
-    --primary: 239 84% 67%;
+    --primary: 234 89% 56%;
     --primary-foreground: 0 0% 98%;
     --secondary: 220 14% 96%;
     --secondary-foreground: 222 47% 11%;
     --muted: 220 14% 96%;
     --muted-foreground: 215 16% 47%;
-    --accent: 243 75% 59%;
+    --accent: 234 89% 56%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 239 84% 67%;
+    --ring: 234 89% 56%;
     --radius: 0.5rem;
   }
 
@@ -33,19 +33,19 @@
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 3.5%;
     --popover-foreground: 0 0% 98%;
-    --primary: 239 84% 67%;
+    --primary: 234 89% 64%;
     --primary-foreground: 0 0% 98%;
     --secondary: 240 5% 6.7%;
     --secondary-foreground: 0 0% 98%;
     --muted: 240 5% 6.7%;
     --muted-foreground: 240 5% 64.9%;
-    --accent: 239 84% 67%;
+    --accent: 234 89% 64%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
     --border: 240 4% 16%;
     --input: 240 4% 16%;
-    --ring: 239 84% 67%;
+    --ring: 234 89% 64%;
   }
 
   * {
@@ -67,6 +67,14 @@
 
   .animate-in {
     animation: animate-in 0.3s ease-out;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-slate-900 via-indigo-700 to-indigo-500 bg-clip-text text-transparent;
+  }
+
+  .dark .text-gradient {
+    @apply from-white via-indigo-300 to-indigo-500;
   }
 }
 

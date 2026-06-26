@@ -7,6 +7,7 @@ interface ChatContext {
   workspaceId: string;
   userId: string;
   userMessage: string;
+  conversationId: string;
 }
 
 /**
@@ -45,9 +46,9 @@ async function buildWorkspaceContext(workspaceId: string): Promise<string> {
 /**
  * Get recent chat history for context (last 10 messages).
  */
-async function getChatHistory(workspaceId: string): Promise<string> {
+async function getChatHistory(conversationId: string): Promise<string> {
   const messages = await prisma.chatMessage.findMany({
-    where: { workspaceId },
+    where: { conversationId },
     orderBy: { createdAt: "desc" },
     take: 10,
   });
@@ -83,7 +84,7 @@ export async function* generateChatResponse(
   ctx: ChatContext,
 ): AsyncGenerator<string> {
   const workspaceContext = await buildWorkspaceContext(ctx.workspaceId);
-  const chatHistory = await getChatHistory(ctx.workspaceId);
+  const chatHistory = await getChatHistory(ctx.conversationId);
 
   const fullPrompt = `${SYSTEM_PROMPT}\n\n${workspaceContext}\n\n${chatHistory}\n\n**User's Question:**\n${ctx.userMessage}`;
 
@@ -94,22 +95,22 @@ export async function* generateChatResponse(
  * Save a message to chat history.
  */
 export async function saveChatMessage(
-  workspaceId: string,
+  conversationId: string,
   userId: string,
   role: "user" | "assistant",
   content: string,
 ) {
   return prisma.chatMessage.create({
-    data: { workspaceId, userId, role, content },
+    data: { conversationId, userId, role, content },
   });
 }
 
 /**
- * Get chat history for a workspace.
+ * Get chat history for a conversation.
  */
-export async function getMessages(workspaceId: string) {
+export async function getMessages(conversationId: string) {
   return prisma.chatMessage.findMany({
-    where: { workspaceId },
+    where: { conversationId },
     orderBy: { createdAt: "asc" },
     take: 50,
   });

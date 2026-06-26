@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { prisma } from "@/lib/db/client";
 import { getWorkspace } from "@/lib/services/workspace.service";
 import {
   generateChatResponse,
@@ -11,6 +12,24 @@ import {
 
 interface RouteParams {
   params: Promise<{ id: string }>;
+}
+
+/**
+ * Get or create a conversation for a workspace.
+ */
+async function getOrCreateConversation(userId: string, workspaceId: string) {
+  let conversation = await prisma.conversation.findFirst({
+    where: { userId, workspaceId },
+    orderBy: { updatedAt: "desc" },
+  });
+
+  if (!conversation) {
+    conversation = await prisma.conversation.create({
+      data: { userId, workspaceId, title: "Workspace Chat" },
+    });
+  }
+
+  return conversation;
 }
 
 /**
@@ -28,7 +47,8 @@ export async function GET(_req: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  const messages = await getMessages(id);
+  const conversation = await getOrCreateConversation(userId, id);
+  const messages = await getMessages(conversation.id);
   return NextResponse.json({ data: messages });
 }
 
@@ -64,8 +84,10 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
     );
   }
 
+  const conversation = await getOrCreateConversation(userId, id);
+
   // Save user message
-  await saveChatMessage(id, userId, "user", message);
+  await saveChatMessage(conversation.id, userId, "user", message);
 
   // Stream AI response
   const encoder = new TextEncoder();
@@ -78,6 +100,7 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
           workspaceId: id,
           userId,
           userMessage: message,
+          conversationId: conversation.id,
         });
 
         for await (const chunk of generator) {
@@ -88,7 +111,7 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
         }
 
         // Save the complete response
-        await saveChatMessage(id, userId, "assistant", fullResponse);
+        await saveChatMessage(conversation.id, userId, "assistant", fullResponse);
 
         // Send suggestions
         const suggestions = getSuggestedActions(fullResponse);

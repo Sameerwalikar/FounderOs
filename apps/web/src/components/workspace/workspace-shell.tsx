@@ -6,15 +6,12 @@ import {
   ArrowLeft,
   Download,
   Loader2,
-  MessageSquare,
-  PanelRightClose,
   Sparkles,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChatPanel } from "@/components/workspace/chat-panel";
 import {
   BLUEPRINT_SECTIONS,
   SECTION_META,
@@ -46,7 +43,6 @@ export function WorkspaceShell({
 }: WorkspaceShellProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const [chatOpen, setChatOpen] = useState(false);
   const [generating, setGenerating] = useState(false);
 
   const isComplete = completedSections === totalSections && totalSections > 0;
@@ -122,19 +118,6 @@ export function WorkspaceShell({
 
         <div className="flex items-center gap-2">
           <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setChatOpen(!chatOpen)}
-            className={cn(
-              "gap-1.5",
-              chatOpen && "bg-primary/10 border-primary/40 text-primary",
-            )}
-          >
-            <MessageSquare className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Chat with Co-Founder</span>
-          </Button>
-
-          <Button
             size="sm"
             onClick={handleGenerate}
             disabled={generating}
@@ -198,37 +181,11 @@ export function WorkspaceShell({
         </nav>
       </div>
 
-      {/* Content + Chat Split Panel */}
+      {/* Content */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Main Content */}
         <div className="flex-1 overflow-y-auto px-4 py-6 lg:px-8 lg:py-8">
           {children}
         </div>
-
-        {/* AI Chat Panel (right side, toggleable) */}
-        {chatOpen && (
-          <div className="flex w-[380px] flex-col border-l border-border/50 bg-card/30">
-            <div className="flex items-center justify-between border-b border-border/50 px-4 py-2.5">
-              <div className="flex items-center gap-2">
-                <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary/10">
-                  <Sparkles className="h-3 w-3 text-primary" />
-                </div>
-                <span className="text-xs font-semibold">AI Co-Founder</span>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-7 w-7"
-                onClick={() => setChatOpen(false)}
-              >
-                <PanelRightClose className="h-3.5 w-3.5" />
-              </Button>
-            </div>
-            <div className="flex-1 overflow-hidden">
-              <ChatPanel workspaceId={workspaceId} />
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

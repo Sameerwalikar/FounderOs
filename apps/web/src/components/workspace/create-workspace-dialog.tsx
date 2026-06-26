@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { cn } from "@/lib/utils";
 import { INDUSTRIES, STARTUP_STAGES, STAGE_LABELS } from "@/lib/validators/workspace";
 
@@ -79,143 +79,146 @@ export function CreateWorkspaceDialog() {
 
   if (!open) {
     return (
-      <Button onClick={() => setOpen(true)}>
-        <Plus className="mr-2 h-4 w-4" />
+      <HoverBorderGradient
+        containerClassName="rounded-full"
+        onClick={() => setOpen(true)}
+      >
+        <Plus className="mr-2 inline h-4 w-4" />
         Create Startup
-      </Button>
+      </HoverBorderGradient>
     );
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
-      <div className="mx-4 w-full max-w-lg rounded-xl border border-border bg-card p-6 shadow-lg">
-        <h2 className="text-lg font-semibold">Create New Startup</h2>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Tell us about your startup idea.
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+      <form
+        onSubmit={handleSubmit}
+        className="mx-4 flex w-full max-w-[400px] flex-col gap-3 rounded-2xl border border-zinc-700/50 bg-[#1a1a1a] p-6 shadow-2xl"
+      >
+        {/* Title with pulse dot */}
+        <div className="flex items-center gap-2">
+          <span className="relative flex h-4 w-4">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-75" />
+            <span className="relative inline-flex h-4 w-4 rounded-full bg-indigo-500" />
+          </span>
+          <p className="text-2xl font-semibold tracking-tight text-indigo-400">
+            Create Startup
+          </p>
+        </div>
+        <p className="text-sm text-zinc-400">
+          Tell us about your startup idea and we&apos;ll build your blueprint.
         </p>
 
-        <form onSubmit={handleSubmit} className="mt-5 space-y-4">
-          {/* Startup Name */}
-          <div>
-            <label
-              htmlFor="startup-name"
-              className="text-sm font-medium"
-            >
-              Startup Name
-            </label>
-            <Input
-              id="startup-name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. FoodSaver, LawyerAI, DesignFlow"
+        {/* Startup Name */}
+        <label className="relative mt-2">
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder=" "
+            maxLength={100}
+            disabled={loading}
+            className="peer w-full rounded-xl border border-zinc-700/60 bg-zinc-800/80 px-3 pb-2 pt-5 text-sm text-white outline-none transition-colors focus:border-indigo-500 placeholder-shown:pt-3"
+          />
+          <span className="absolute left-3 top-1 text-[11px] font-medium text-indigo-400 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-placeholder-shown:text-zinc-500 peer-focus:top-1 peer-focus:text-[11px] peer-focus:text-indigo-400">
+            Startup Name
+          </span>
+        </label>
+
+        {/* Startup Idea */}
+        <label className="relative">
+          <textarea
+            value={idea}
+            onChange={(e) => {
+              setIdea(e.target.value);
+              setError("");
+            }}
+            placeholder=" "
+            disabled={loading}
+            rows={3}
+            className="peer w-full resize-none rounded-xl border border-zinc-700/60 bg-zinc-800/80 px-3 pb-2 pt-5 text-sm text-white outline-none transition-colors focus:border-indigo-500 placeholder-shown:pt-3"
+          />
+          <span className="absolute left-3 top-1 text-[11px] font-medium text-indigo-400 transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-sm peer-placeholder-shown:text-zinc-500 peer-focus:top-1 peer-focus:text-[11px] peer-focus:text-indigo-400">
+            Startup Idea
+          </span>
+          <span
+            className={cn(
+              "block text-right text-[11px]",
+              ideaCount > 500 ? "text-red-400" : "text-zinc-500",
+            )}
+          >
+            {ideaCount}/500
+          </span>
+        </label>
+
+        {/* Industry & Stage */}
+        <div className="flex gap-2">
+          <label className="relative flex-1">
+            <select
+              value={industry}
+              onChange={(e) => setIndustry(e.target.value)}
               disabled={loading}
-              className="mt-1.5"
-              maxLength={100}
-            />
-          </div>
-
-          {/* Startup Idea */}
-          <div>
-            <label
-              htmlFor="startup-idea"
-              className="text-sm font-medium"
+              className="w-full appearance-none rounded-xl border border-zinc-700/60 bg-zinc-800/80 px-3 py-3 text-sm text-white outline-none transition-colors focus:border-indigo-500"
             >
-              Startup Idea
-            </label>
-            <textarea
-              id="startup-idea"
-              value={idea}
-              onChange={(e) => {
-                setIdea(e.target.value);
-                setError("");
-              }}
-              placeholder="e.g. A platform that helps restaurants reduce food waste by connecting them with local food banks and shelters in real-time..."
-              className="mt-1.5 flex min-h-[100px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              <option value="">Industry...</option>
+              {INDUSTRIES.map((ind) => (
+                <option key={ind} value={ind}>
+                  {ind}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="relative flex-1">
+            <select
+              value={startupStage}
+              onChange={(e) => setStartupStage(e.target.value)}
               disabled={loading}
-            />
-            <span
-              className={cn(
-                "mt-1 block text-xs",
-                ideaCount > 500 ? "text-destructive" : "text-muted-foreground",
-              )}
+              className="w-full appearance-none rounded-xl border border-zinc-700/60 bg-zinc-800/80 px-3 py-3 text-sm text-white outline-none transition-colors focus:border-indigo-500"
             >
-              {ideaCount}/500
-            </span>
-          </div>
+              {STARTUP_STAGES.map((stage) => (
+                <option key={stage} value={stage}>
+                  {STAGE_LABELS[stage]}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
 
-          {/* Industry & Stage row */}
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label
-                htmlFor="industry"
-                className="text-sm font-medium"
-              >
-                Industry
-              </label>
-              <select
-                id="industry"
-                value={industry}
-                onChange={(e) => setIndustry(e.target.value)}
-                className="mt-1.5 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                disabled={loading}
-              >
-                <option value="">Select...</option>
-                {INDUSTRIES.map((ind) => (
-                  <option key={ind} value={ind}>
-                    {ind}
-                  </option>
-                ))}
-              </select>
-            </div>
+        {/* Error */}
+        {error && (
+          <p className="text-sm text-red-400">{error}</p>
+        )}
 
-            <div>
-              <label
-                htmlFor="stage"
-                className="text-sm font-medium"
-              >
-                Stage
-              </label>
-              <select
-                id="stage"
-                value={startupStage}
-                onChange={(e) => setStartupStage(e.target.value)}
-                className="mt-1.5 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                disabled={loading}
-              >
-                {STARTUP_STAGES.map((stage) => (
-                  <option key={stage} value={stage}>
-                    {STAGE_LABELS[stage]}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
+        {/* Actions */}
+        <div className="mt-2 flex justify-end gap-3">
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() => {
+              setOpen(false);
+              resetForm();
+            }}
+            disabled={loading}
+            className="text-zinc-400 hover:text-white"
+          >
+            Cancel
+          </Button>
+          <button
+            type="submit"
+            disabled={!isValid || loading}
+            className="rounded-xl bg-indigo-500 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading && <Loader2 className="mr-2 inline h-4 w-4 animate-spin" />}
+            Create Startup
+          </button>
+        </div>
 
-          {/* Error */}
-          {error && (
-            <p className="text-sm text-destructive">{error}</p>
-          )}
-
-          {/* Actions */}
-          <div className="flex justify-end gap-3 pt-2">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => {
-                setOpen(false);
-                resetForm();
-              }}
-              disabled={loading}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" disabled={!isValid || loading}>
-              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Create Startup
-            </Button>
-          </div>
-        </form>
-      </div>
+        {/* Footer */}
+        <p className="text-center text-[11px] text-zinc-500">
+          Your startup blueprint will be generated using AI
+        </p>
+      </form>
     </div>
   );
 }

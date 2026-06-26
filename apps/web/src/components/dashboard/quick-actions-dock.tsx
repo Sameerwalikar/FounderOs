@@ -32,7 +32,7 @@ export function QuickActionsDock({ workspaceId }: QuickActionsDockProps) {
       icon: <MessageSquare className="h-5 w-5" />,
       label: "Chat with Co-Founder",
       description: "Ask anything about your startup",
-      href: `/workspace/${workspaceId}/ai-chat`,
+      href: "/dashboard/ai",
       color: "text-blue-500",
       bgColor: "bg-blue-500/10 group-hover:bg-blue-500/20",
     },
