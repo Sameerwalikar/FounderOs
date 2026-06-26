@@ -1,7 +1,7 @@
 "use client";
 
 import { Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 const plans = [
@@ -9,7 +9,7 @@ const plans = [
     name: "Free",
     price: "₹0",
     period: "/month",
-    description: "Get started with basic AI features",
+    credits: "10 Credits",
     features: [
       "10 AI Credits/month",
       "1 Workspace",
@@ -19,12 +19,13 @@ const plans = [
     ],
     cta: "Get Started",
     highlighted: false,
+    tag: null,
   },
   {
     name: "Pro",
     price: "₹99",
     period: "/month",
-    description: "Full power for serious founders",
+    credits: "250 Credits",
     features: [
       "250 AI Credits/month",
       "Unlimited Workspaces",
@@ -37,12 +38,13 @@ const plans = [
     ],
     cta: "Start Pro",
     highlighted: true,
+    tag: "Popular",
   },
   {
     name: "Scale",
     price: "₹299",
     period: "/month",
-    description: "For growing startups that need more",
+    credits: "800 Credits",
     features: [
       "800 AI Credits/month",
       "Everything in Pro",
@@ -54,12 +56,13 @@ const plans = [
     ],
     cta: "Start Scale",
     highlighted: false,
+    tag: null,
   },
   {
     name: "Team",
     price: "₹699",
     period: "/month",
-    description: "Collaborate with your co-founders",
+    credits: "2500 Credits",
     features: [
       "2500 AI Credits/month",
       "Everything in Scale",
@@ -71,6 +74,7 @@ const plans = [
     ],
     cta: "Start Team",
     highlighted: false,
+    tag: null,
   },
 ];
 
@@ -92,47 +96,72 @@ export function Pricing() {
             <div
               key={plan.name}
               className={cn(
-                "relative rounded-xl border p-6 transition-transform duration-200 hover:-translate-y-1",
+                "group relative overflow-hidden rounded-xl border p-6 transition-all duration-300",
                 plan.highlighted
-                  ? "scale-105 border-primary bg-card shadow-2xl"
-                  : "border-border/50 bg-card shadow-sm hover:shadow-md"
+                  ? "border-primary bg-card shadow-lg hover:bg-white dark:hover:bg-zinc-900"
+                  : "border-border/50 bg-card hover:bg-white dark:hover:bg-zinc-900",
               )}
             >
-              {plan.highlighted && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
-                    Most Popular
-                  </span>
-                </div>
+              {/* Tag badge */}
+              {plan.tag && (
+                <span className="absolute left-3 top-3 rounded-full bg-green-400 px-3 py-1 text-[11px] font-medium text-black">
+                  {plan.tag}
+                </span>
               )}
 
-              <h3 className="text-lg font-semibold">{plan.name}</h3>
-              <div className="mt-3">
-                <span className="text-3xl font-bold">{plan.price}</span>
-                <span className="text-sm text-muted-foreground">{plan.period}</span>
-              </div>
-              <p className="mt-2 text-sm text-muted-foreground">
-                {plan.description}
-              </p>
+              {/* Wrapper with animated spacing */}
+              <div className="flex flex-col items-center gap-4">
+                {/* Credits display (shrinks on hover like card-image) */}
+                <div className="flex h-[100px] w-full items-center justify-center rounded-lg bg-muted/50 transition-all duration-300 group-hover:h-[60px]">
+                  <div className="text-center">
+                    <p className="text-3xl font-bold">{plan.price}</p>
+                    <p className="text-xs text-muted-foreground">{plan.period}</p>
+                  </div>
+                </div>
 
-              <ul className="mt-6 space-y-2.5">
-                {plan.features.map((feature) => (
-                  <li
-                    key={feature}
-                    className="flex items-start gap-2 text-sm"
+                {/* Plan info */}
+                <div className="w-full text-center">
+                  <p className="text-sm font-semibold uppercase tracking-wide">
+                    {plan.name}
+                  </p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    {plan.credits}
+                  </p>
+                </div>
+
+                {/* Features */}
+                <ul className="w-full space-y-2">
+                  {plan.features.slice(0, 5).map((feature) => (
+                    <li
+                      key={feature}
+                      className="flex items-start gap-2 text-xs"
+                    >
+                      <Check className="mt-0.5 h-3 w-3 shrink-0 text-green-500" />
+                      <span className="text-muted-foreground">{feature}</span>
+                    </li>
+                  ))}
+                  {plan.features.length > 5 && (
+                    <li className="text-xs text-muted-foreground/60">
+                      +{plan.features.length - 5} more features
+                    </li>
+                  )}
+                </ul>
+
+                {/* CTA Button (slides up on hover) */}
+                <Link href="/sign-up" className="w-full">
+                  <button
+                    type="button"
+                    className={cn(
+                      "mt-2 w-full rounded-full py-2.5 text-sm font-medium transition-all duration-300 group-hover:mt-0",
+                      plan.highlighted
+                        ? "bg-foreground text-background hover:bg-green-400 hover:text-black"
+                        : "bg-foreground text-background hover:bg-green-400 hover:text-black",
+                    )}
                   >
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <Button
-                className="mt-6 w-full"
-                variant={plan.highlighted ? "default" : "outline"}
-              >
-                {plan.cta}
-              </Button>
+                    {plan.cta}
+                  </button>
+                </Link>
+              </div>
             </div>
           ))}
         </div>

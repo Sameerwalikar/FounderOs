@@ -70,7 +70,7 @@ export function PricingCards({ currentPlan }: PricingCardsProps) {
           });
 
           if (verifyRes.ok) {
-            router.refresh();
+            router.push(`/dashboard/billing/success?plan=${planId}`);
           }
         },
         theme: { color: "#6366f1" },
